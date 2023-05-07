@@ -20,6 +20,7 @@ namespace Walking_pokemon
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
+            Program.Park.Exit();
             this.Close();
         }
 

@@ -10,10 +10,10 @@ namespace Walking_pokemon.Pokemon
     {
         // Position limits
         private Pokepark Park;
-        protected float MIN_X { get => Park.X; }
-        protected float MAX_X { get => Park.Width; }
-        protected float MIN_Y { get => Park.Y; }
-        protected float MAX_Y { get => Park.Height; }
+        protected static float MIN_X = 0;
+        protected float MAX_X = 1;
+        protected float MIN_Y = 0;
+        protected float MAX_Y = 1;
         protected int maxSize = 30;
 
         //position
@@ -28,14 +28,14 @@ namespace Walking_pokemon.Pokemon
             }
             set
             {
-                if (value < MIN_X + maxSize * scale / 2)
+                if (value < MIN_X)
                 {
-                    x = MIN_X + maxSize * scale / 2;
+                    x = MIN_X;
                     timer = 0;
                 }
-                else if (value > MAX_X - maxSize * scale / 2)
+                else if (value > MAX_X)
                 {
-                    x = MAX_X - maxSize * scale / 2;
+                    x = MAX_X;
                     timer = 0;
                 }
                 else
@@ -53,14 +53,14 @@ namespace Walking_pokemon.Pokemon
             }
             set
             {
-                if (value < MIN_Y + maxSize * scale / 2)
+                if (value < MIN_Y)
                 {
-                    y = MIN_Y + maxSize * scale / 2;
+                    y = MIN_Y;
                     timer = 0;
                 }
-                else if (value > MAX_Y - maxSize * scale / 2)
+                else if (value > MAX_Y)
                 {
-                    y = MAX_Y - maxSize * scale / 2;
+                    y = MAX_Y;
                     timer = 0;
                 }
                 else
@@ -70,13 +70,22 @@ namespace Walking_pokemon.Pokemon
             }
         }
 
-        public Point Pos
+        public float[] Pos
         { 
             get 
-            { 
-                Point result = new Point((int)X, (int)Y);
-                oldPos = result;
-                return result;
+            {
+                Rectangle draw = SpriteRect;
+                float[] vertices = {
+                    (X - 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
+                    (Y - 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
+                    (X + 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
+                    (Y - 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
+                    (X + 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
+                    (Y + 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
+                    (X - 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
+                    (Y + 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f
+                };
+                return vertices;
             } 
         }
         public Point oldPos;
@@ -130,8 +139,8 @@ namespace Walking_pokemon.Pokemon
             rng = new Random();
             if (scale < 0) this.scale = (float)(rng.NextDouble() + 2.5);
             else this.scale = scale;
-            X = maxSize * this.scale / 2;
-            Y = maxSize * this.scale / 2;
+            X = 0.5f;
+            Y = 0.5f;
             this.scale *= info.scale;
 
             JsonAnimationPath = info.animPath;

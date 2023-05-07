@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using System.Text;
 using System.Drawing;
 using System.Diagnostics;
@@ -42,35 +43,35 @@ namespace Walking_pokemon.Pokemon
             Gravity = gravity;
         }
 
-        public Image DrawPark(Image result)
-        {
-            Graphics land = Graphics.FromImage(result);
-            //land.FillRectangle(transparentBrush, new Rectangle(0, 0, Size.Width, Size.Height));
-            land.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            land.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-            foreach (Pokemon pokemon1 in Pokemons)
-            {
-                Point pos = pokemon1.oldPos;
-                Rectangle Rect = pokemon1.oldRect;
-                int width = (int)((float)Rect.Width * pokemon1.Scale);
-                int height = (int)((float)Rect.Height * pokemon1.Scale);
-                Rectangle destRect = new Rectangle(pos.X - width / 2, pos.Y - height / 2, width, height);
-                land.FillRectangle(transparentBrush, destRect);
-            }
-            foreach (Pokemon pokemon in Pokemons)
-            {
-                Image sprite = pokemon.Spritesheet;
-                Point pos = pokemon.Pos;
-                Rectangle Rect = pokemon.SpriteRect;
-                int width = (int)((float)Rect.Width * pokemon.Scale);
-                int height = (int)((float)Rect.Height * pokemon.Scale);
-                Rectangle destRect = new Rectangle(pos.X - width / 2, pos.Y - height / 2, width, height);
-                land.DrawImage(sprite, destRect, Rect, GraphicsUnit.Pixel);
-                //land.DrawLine(Pens.Red, pos, new Point(0,0));
-                //land.DrawString($"{pokemon.timer}, {pokemon.state}", SystemFonts.DefaultFont, Brushes.Red, pos.X, pos.Y + 90);
-            }
-            return result;
-        }
+        //public Image DrawPark(Image result)
+        //{
+        //    Graphics land = Graphics.FromImage(result);
+        //    //land.FillRectangle(transparentBrush, new Rectangle(0, 0, Size.Width, Size.Height));
+        //    land.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+        //    land.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+        //    foreach (Pokemon pokemon1 in Pokemons)
+        //    {
+        //        Point pos = pokemon1.oldPos;
+        //        Rectangle Rect = pokemon1.oldRect;
+        //        int width = (int)((float)Rect.Width * pokemon1.Scale);
+        //        int height = (int)((float)Rect.Height * pokemon1.Scale);
+        //        Rectangle destRect = new Rectangle(pos.X - width / 2, pos.Y - height / 2, width, height);
+        //        land.FillRectangle(transparentBrush, destRect);
+        //    }
+        //    foreach (Pokemon pokemon in Pokemons)
+        //    {
+        //        Image sprite = pokemon.Spritesheet;
+        //        Point pos = pokemon.Pos;
+        //        Rectangle Rect = pokemon.SpriteRect;
+        //        int width = (int)((float)Rect.Width * pokemon.Scale);
+        //        int height = (int)((float)Rect.Height * pokemon.Scale);
+        //        Rectangle destRect = new Rectangle(pos.X - width / 2, pos.Y - height / 2, width, height);
+        //        land.DrawImage(sprite, destRect, Rect, GraphicsUnit.Pixel);
+        //        //land.DrawLine(Pens.Red, pos, new Point(0,0));
+        //        //land.DrawString($"{pokemon.timer}, {pokemon.state}", SystemFonts.DefaultFont, Brushes.Red, pos.X, pos.Y + 90);
+        //    }
+        //    return result;
+        //}
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -84,14 +85,20 @@ namespace Walking_pokemon.Pokemon
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            controls ControlForm = new controls();
+            ControlForm.Show();
+
+
             GL.ClearColor(0.2f, 0.3f, 0f, 1f);
             VertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw); 
 
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
             ElementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
@@ -109,9 +116,14 @@ namespace Walking_pokemon.Pokemon
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            shader.Use();
-            GL.BindVertexArray(VertexArrayObject);
-            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+
+            foreach (Pokemon pokemon in Pokemons)
+            {
+                GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), pokemon.Pos, BufferUsageHint.StreamDraw);
+                shader.Use();
+                GL.BindVertexArray(VertexArrayObject);
+                GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            }
 
             Context.SwapBuffers();
         }

@@ -21,9 +21,6 @@ namespace Walking_pokemon
         {
             Park = new Pokepark(800, 600, false);
             Park.Run();
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new controls());
         }
     }
 }
