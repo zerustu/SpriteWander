@@ -29,52 +29,57 @@ namespace Walking_pokemon
         /// </summary>
         private void InitializeComponent()
         {
-            this.AddButton = new System.Windows.Forms.Button();
-            this.CloseButton = new System.Windows.Forms.Button();
-            this.PokemonList = new System.Windows.Forms.ListBox();
-            this.SuspendLayout();
+            AddButton = new Button();
+            CloseButton = new Button();
+            PokemonList = new ListBox();
+            SuspendLayout();
             // 
             // AddButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(15, 332);
-            this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(119, 55);
-            this.AddButton.TabIndex = 0;
-            this.AddButton.Text = "Add 1";
-            this.AddButton.UseVisualStyleBackColor = true;
-            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
+            AddButton.Location = new Point(18, 383);
+            AddButton.Margin = new Padding(4, 3, 4, 3);
+            AddButton.Name = "AddButton";
+            AddButton.Size = new Size(139, 63);
+            AddButton.TabIndex = 0;
+            AddButton.Text = "Add 1";
+            AddButton.UseVisualStyleBackColor = true;
+            AddButton.Click += AddButton_Click;
             // 
             // CloseButton
             // 
-            this.CloseButton.Location = new System.Drawing.Point(140, 332);
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(127, 54);
-            this.CloseButton.TabIndex = 1;
-            this.CloseButton.Text = "Close app";
-            this.CloseButton.UseVisualStyleBackColor = true;
-            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
+            CloseButton.Location = new Point(163, 383);
+            CloseButton.Margin = new Padding(4, 3, 4, 3);
+            CloseButton.Name = "CloseButton";
+            CloseButton.Size = new Size(148, 62);
+            CloseButton.TabIndex = 1;
+            CloseButton.Text = "Close app";
+            CloseButton.UseVisualStyleBackColor = true;
+            CloseButton.Click += CloseButton_Click;
             // 
             // PokemonList
             // 
-            this.PokemonList.FormattingEnabled = true;
-            this.PokemonList.Location = new System.Drawing.Point(9, 5);
-            this.PokemonList.Name = "PokemonList";
-            this.PokemonList.Size = new System.Drawing.Size(257, 303);
-            this.PokemonList.TabIndex = 2;
+            PokemonList.FormattingEnabled = true;
+            PokemonList.ItemHeight = 15;
+            PokemonList.Location = new Point(10, 6);
+            PokemonList.Margin = new Padding(4, 3, 4, 3);
+            PokemonList.Name = "PokemonList";
+            PokemonList.Size = new Size(299, 349);
+            PokemonList.TabIndex = 2;
+            PokemonList.SelectedIndexChanged += PokemonList_SelectedIndexChanged;
             // 
             // controls
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(281, 395);
-            this.Controls.Add(this.PokemonList);
-            this.Controls.Add(this.CloseButton);
-            this.Controls.Add(this.AddButton);
-            this.Name = "controls";
-            this.Text = "controls";
-            this.Load += new System.EventHandler(this.controls_Load);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(328, 456);
+            Controls.Add(PokemonList);
+            Controls.Add(CloseButton);
+            Controls.Add(AddButton);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "controls";
+            Text = "controls";
+            Load += controls_Load;
+            ResumeLayout(false);
         }
 
         #endregion

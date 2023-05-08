@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using Walking_pokemon.Pokemon;
-using OpenTK.Platform;
 
 namespace Walking_pokemon
 {
@@ -24,9 +21,6 @@ namespace Walking_pokemon
             Application.SetCompatibleTextRenderingDefault(false);
             Park = new DrawPark();
             Application.Run(Park);
-
-            //Park = new Pokepark(800, 800, false);
-            //Park.Run();
         }
     }
 }

@@ -1,30 +1,17 @@
-﻿using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using System;
-using System.Collections.Generic;
+﻿using OpenTK.Graphics.OpenGL;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Walking_pokemon.Pokemon;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Walking_pokemon
 {
     public partial class DrawPark : Form
     {
-        BackgroundWorker bw = new BackgroundWorker();
         public List<Walking_pokemon.Pokemon.Pokemon> Pokemons;
         Dictionary<string, Texture> Textures;
         public Shader shader;
-        private bool _loaded;
 
         private System.Windows.Forms.Timer _timer = null!;
-        private float _angle = 0.0f;
 
         public DrawPark()
         {
@@ -37,12 +24,6 @@ namespace Walking_pokemon
 
         private void DrawPark_Load(object sender, EventArgs e)
         {
-            //BackgroundWorker tmpBw = new BackgroundWorker();
-            //tmpBw.DoWork += new DoWorkEventHandler(bw_DoWork);
-            //
-            //this.bw = tmpBw;
-            //
-            //this.bw.RunWorkerAsync();
         }
 
         private void GLControl_Load(object sender, EventArgs e)
@@ -54,10 +35,9 @@ namespace Walking_pokemon
             _timer = new System.Windows.Forms.Timer();
             _timer.Tick += (sender, e) =>
             {
-                _angle += 0.5f;
                 foreach (Pokemon.Pokemon pokemon in Pokemons)
                 {
-                    pokemon.Tick(_timer.Interval);
+                    pokemon.Tick(_timer.Interval/1000.0);
                 }
                 Render();
             };
@@ -77,7 +57,6 @@ namespace Walking_pokemon
             GL.Viewport(0, 0, gLControl.Width, gLControl.Height);
             shader = new Shader("shader.vert", "shader.frag");
             shader.Use();
-            _loaded = true;
             gLControl.Invalidate();
             int texture0 = GL.GetUniformLocation(shader.Handle, "texture0");
             GL.Uniform1(texture0, 0);
@@ -91,12 +70,6 @@ namespace Walking_pokemon
                 gLControl.ClientSize = new System.Drawing.Size(gLControl.ClientSize.Width, 1);
 
             GL.Viewport(0, 0, gLControl.ClientSize.Width, gLControl.ClientSize.Height);
-
-
-            //if (!_loaded)
-            //    return;
-            //GL.Viewport(0, 0, gLControl.Width, gLControl.Height);
-            //gLControl.Invalidate();
         }
 
         public void GLControl_Paint(object sender, PaintEventArgs e)
@@ -140,8 +113,6 @@ namespace Walking_pokemon
 
         public void Exit()
         {
-            _loaded = false;
-            bw.Dispose();
             foreach (var pokemon in Pokemons)
             {
                 pokemon.Dispose();

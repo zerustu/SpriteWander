@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Walking_pokemon.Pokemon
@@ -72,8 +68,8 @@ namespace Walking_pokemon.Pokemon
         }
 
         public float[] Pos
-        { 
-            get 
+        {
+            get
             {
                 Rectangle draw = SpriteRect;
                 float[] vertices = {
@@ -181,7 +177,7 @@ namespace Walking_pokemon.Pokemon
             GL.VertexAttribPointer(CoordLocation, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
             int textLocation = GL.GetAttribLocation(Park.shader.Handle, "aTexCoord");
             GL.EnableVertexAttribArray(textLocation);
-            GL.VertexAttribPointer(textLocation, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2*sizeof(float));
+            GL.VertexAttribPointer(textLocation, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
 
             ElementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
@@ -227,7 +223,7 @@ namespace Walking_pokemon.Pokemon
                         switch (subState) // move
                         {
                             case 0:
-                                X += speed*(float)time;
+                                X += speed * (float)time;
                                 break;
                             case 1:
                                 Y += speed * (float)time;

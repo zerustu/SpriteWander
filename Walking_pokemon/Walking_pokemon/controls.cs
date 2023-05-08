@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace Walking_pokemon
+﻿namespace Walking_pokemon
 {
     public partial class controls : Form
     {
@@ -16,6 +13,7 @@ namespace Walking_pokemon
             {
                 PokemonList.Items.Add(pokemon);
             }
+            PokemonList.SelectedIndex = 0;
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

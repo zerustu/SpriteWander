@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using OpenTK.Graphics.OpenGL4;
-using System.Drawing;
+﻿using OpenTK.Graphics.OpenGL4;
 using System.Drawing.Imaging;
 
 namespace Walking_pokemon.Pokemon
@@ -62,6 +59,12 @@ namespace Walking_pokemon.Pokemon
         {
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
+        }
+
+        public void Dispose()
+        {
+            GL.DeleteTexture(Handle);
+            Handle = 0;
         }
     }
 }
