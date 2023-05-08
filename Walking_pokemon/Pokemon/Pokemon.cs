@@ -11,7 +11,7 @@ namespace Walking_pokemon.Pokemon
     {
         // Position limits
         private Pokepark Park;
-        protected static float MIN_X = 0;
+        protected float MIN_X = 0;
         protected float MAX_X = 1;
         protected float MIN_Y = 0;
         protected float MAX_Y = 1;
@@ -77,22 +77,22 @@ namespace Walking_pokemon.Pokemon
             {
                 Rectangle draw = SpriteRect;
                 float[] vertices = {
-                    (X - 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
-                    (Y - 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
-                    (float)draw.X / (float)draw.Width,
-                    (float)draw.Y / (float)draw.Height,
-                    (X + 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
-                    (Y - 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
-                    ((float)draw.X + (float)draw.Width) / (float)draw.Width,
-                    (float)draw.Y / (float)draw.Height,
-                    (X - 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
-                    (Y + 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
-                    (float)draw.X / (float)draw.Width,
-                    ((float)draw.Y + (float)draw.Height) / (float)draw.Height,
-                    (X + 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
-                    (Y + 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
-                    ((float)draw.X + (float)draw.Width) / (float)draw.Width,
-                    ((float)draw.Y + (float)draw.Height) / (float)draw.Height
+                    (X - 0.1f - MIN_X )/(-MIN_X + MAX_X) * 2f - 1f,
+                    (Y - 0.1f - MIN_Y )/(-MIN_Y + MAX_Y) * 2f - 1f,
+                    (float)draw.X / (float)Texture.Width,
+                    (float)draw.Y / (float)Texture.Height,
+                    (X + 0.1f - MIN_X )/(-MIN_X + MAX_X) * 2f - 1f,
+                    (Y - 0.1f - MIN_Y )/(-MIN_Y + MAX_Y) * 2f - 1f,
+                    ((float)draw.X + (float)draw.Width) / (float)Texture.Width,
+                    (float)draw.Y / (float)Texture.Height,
+                    (X - 0.1f - MIN_X )/(-MIN_X + MAX_X) * 2f - 1f,
+                    (Y + 0.1f - MIN_Y )/(-MIN_Y + MAX_Y) * 2f - 1f,
+                    (float)draw.X / (float)Texture.Width,
+                    ((float)draw.Y + (float)draw.Height) / (float)Texture.Height,
+                    (X + 0.1f - MIN_X )/(-MIN_X + MAX_X) * 2f - 1f,
+                    (Y + 0.1f - MIN_Y )/(-MIN_Y + MAX_Y) * 2f - 1f,
+                    ((float)draw.X + (float)draw.Width) / (float)Texture.Width,
+                    ((float)draw.Y + (float)draw.Height) / (float)Texture.Height
                 };
                 return vertices;
             }
@@ -181,7 +181,7 @@ namespace Walking_pokemon.Pokemon
             GL.VertexAttribPointer(CoordLocation, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
             int textLocation = GL.GetAttribLocation(Park.shader.Handle, "aTexCoord");
             GL.EnableVertexAttribArray(textLocation);
-            GL.VertexAttribPointer(textLocation, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
+            GL.VertexAttribPointer(textLocation, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2*sizeof(float));
 
             ElementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);

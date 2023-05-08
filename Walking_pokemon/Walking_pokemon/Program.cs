@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Walking_pokemon.Pokemon;
+using OpenTK.Platform;
 
 namespace Walking_pokemon
 {
@@ -10,7 +11,7 @@ namespace Walking_pokemon
 
         public static Dictionary<string, PokemonInfo> pokedex = JsonConvert.DeserializeObject<Dictionary<string, PokemonInfo>>(System.IO.File.ReadAllText(@".\pokemons.json"));
 
-        public static Pokepark Park;
+        public static DrawPark? Park;
 
         /// <summary>
         /// The main entry point for the application.
@@ -18,8 +19,14 @@ namespace Walking_pokemon
         [STAThread]
         static void Main()
         {
-            Park = new Pokepark(800, 800, false);
-            Park.Run();
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Park = new DrawPark();
+            Application.Run(Park);
+
+            //Park = new Pokepark(800, 800, false);
+            //Park.Run();
         }
     }
 }
