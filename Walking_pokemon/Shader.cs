@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -61,7 +61,8 @@ namespace Walking_pokemon
             GL.DetachShader(Handle, VertexShader);
             GL.DetachShader(Handle, FragmentShader);
             GL.DeleteShader(FragmentShader);
-            GL.DeleteShader(VertexShader);
+            GL.DeleteShader(VertexShader); 
+            GL.Enable(EnableCap.Texture2D);
         }
 
         public void Use()
