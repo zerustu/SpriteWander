@@ -65,7 +65,6 @@ namespace Walking_pokemon
             PokemonList.Name = "PokemonList";
             PokemonList.Size = new Size(299, 349);
             PokemonList.TabIndex = 2;
-            PokemonList.SelectedIndexChanged += PokemonList_SelectedIndexChanged;
             // 
             // controls
             // 

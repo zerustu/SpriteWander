@@ -33,6 +33,7 @@
             // 
             // gLControl
             // 
+            gLControl.AutoSize = true;
             gLControl.BackColor = Color.Black;
             gLControl.Location = new Point(0, 0);
             gLControl.Margin = new Padding(4, 3, 4, 3);
@@ -55,6 +56,7 @@
             TransparencyKey = SystemColors.Control;
             Load += DrawPark_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
