@@ -1,12 +1,8 @@
 ﻿using OpenTK.Graphics.OpenGL4;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace Walking_pokemon
 {
-    public class Shader: IDisposable
+    public class Shader : IDisposable
     {
         public int Handle;
 
@@ -15,7 +11,7 @@ namespace Walking_pokemon
             int VertexShader;
 
             int FragmentShader;
-            
+
             string VertexShaderSource = File.ReadAllText(vertexPath);
 
             string FragmentShaderSource = File.ReadAllText(fragmentPath);
@@ -61,7 +57,7 @@ namespace Walking_pokemon
             GL.DetachShader(Handle, VertexShader);
             GL.DetachShader(Handle, FragmentShader);
             GL.DeleteShader(FragmentShader);
-            GL.DeleteShader(VertexShader); 
+            GL.DeleteShader(VertexShader);
             GL.Enable(EnableCap.Texture2D);
         }
 

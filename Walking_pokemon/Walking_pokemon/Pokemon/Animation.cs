@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-
-namespace Walking_pokemon.Pokemon
+﻿namespace Walking_pokemon.Pokemon
 {
     public class Animation
     {
@@ -44,7 +40,7 @@ namespace Walking_pokemon.Pokemon
             if (animation.TryGetValue(key, out result)) return result;
             else return animation["stand"];
         }
-        
+
         public int getMax()
         {
             int res = 0;
