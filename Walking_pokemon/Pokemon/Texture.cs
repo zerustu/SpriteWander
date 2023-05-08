@@ -17,7 +17,8 @@ namespace Walking_pokemon.Pokemon
             Bitmap bitmap = new Bitmap(Path);
             Width = bitmap.Width;
             Height = bitmap.Height;
-            var pixels = new float[4 * Width * Height];
+            bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
+            var pixels = new byte[4 * Width * Height];
             int index = 0;
             BitmapData data = null;
             try
@@ -31,10 +32,10 @@ namespace Walking_pokemon.Pokemon
                     {
                         for (int j = 0; j < data.Width; j++)
                         {
-                            pixels[index++] = ptr[2] / 255f;
-                            pixels[index++] = ptr[1] / 255f;
-                            pixels[index++] = ptr[0] / 255f;
-                            pixels[index++] = ptr[3] / 255f;
+                            pixels[index++] = ptr[2];
+                            pixels[index++] = ptr[1];
+                            pixels[index++] = ptr[0];
+                            pixels[index++] = ptr[3];
                             ptr += 4;
                         }
                         ptr += remain;
@@ -45,19 +46,21 @@ namespace Walking_pokemon.Pokemon
             {
                 bitmap.UnlockBits(data);
             }
-            GL.CreateTextures(TextureTarget.Texture2D, 1, out Handle);
-            GL.TextureStorage2D(
-                Handle,
-                1,                           // levels of mipmapping
-                SizedInternalFormat.Rgba32f, // format of texture
-                Width,
-                Height);
+            Handle = GL.GenTexture();
+
+            GL.ActiveTexture(TextureUnit.Texture0);
             this.Use();
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba4, Width, Height, 0, OpenTK.Graphics.OpenGL4.PixelFormat.Rgba, PixelType.Float, pixels);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, OpenTK.Graphics.OpenGL4.PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+            GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
         }
 
         public void Use()
         {
+            GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
         }
     }
