@@ -7,10 +7,17 @@ namespace Walking_pokemon.Pokemon
     {
         // Position limits
         private DrawPark Park;
-        protected float MIN_X = 0;
-        protected float MAX_X = 1;
-        protected float MIN_Y = 0;
-        protected float MAX_Y = 1;
+        protected float MIN_X { get => Park.Left; }
+        protected float MAX_X { get => Park.Right; }
+        protected float MIN_Y { get => Park.Top; }
+        protected float MAX_Y { get => Park.Bottom; }
+
+        //protected float MIN_X = 0;
+        //protected float MAX_X = 1;
+        //protected float MIN_Y = 0;
+        //protected float MAX_Y = 1;
+
+
         protected int maxSize = 30;
 
         //position
@@ -67,26 +74,34 @@ namespace Walking_pokemon.Pokemon
             }
         }
 
+        private float[] Center
+        {
+            get => new float[]{ (X - MIN_X) / (MAX_X - MIN_X), (Y - MIN_Y) / (MAX_Y - MIN_Y)};
+        }
+
         public float[] Pos
         {
             get
             {
                 Rectangle draw = SpriteRect;
+                float[] center = Center;
+                x = Center[0];
+                y = Center[1];
                 float[] vertices = {
-                    (X - 0.1f - MIN_X )/(-MIN_X + MAX_X) * 2f - 1f,
-                    (Y - 0.1f - MIN_Y )/(-MIN_Y + MAX_Y) * 2f - 1f,
+                    x * 2f - 1f - 0.1f,
+                    y * 2f - 1f - 0.1f,
                     (float)draw.X / (float)Texture.Width,
                     (float)draw.Y / (float)Texture.Height,
-                    (X + 0.1f - MIN_X )/(-MIN_X + MAX_X) * 2f - 1f,
-                    (Y - 0.1f - MIN_Y )/(-MIN_Y + MAX_Y) * 2f - 1f,
+                    x * 2f - 1f + 0.1f,
+                    y * 2f - 1f - 0.1f  ,
                     ((float)draw.X + (float)draw.Width) / (float)Texture.Width,
                     (float)draw.Y / (float)Texture.Height,
-                    (X - 0.1f - MIN_X )/(-MIN_X + MAX_X) * 2f - 1f,
-                    (Y + 0.1f - MIN_Y )/(-MIN_Y + MAX_Y) * 2f - 1f,
+                    x * 2f - 1f - 0.1f,
+                    y * 2f - 1f + 0.1f,
                     (float)draw.X / (float)Texture.Width,
                     ((float)draw.Y + (float)draw.Height) / (float)Texture.Height,
-                    (X + 0.1f - MIN_X )/(-MIN_X + MAX_X) * 2f - 1f,
-                    (Y + 0.1f - MIN_Y )/(-MIN_Y + MAX_Y) * 2f - 1f,
+                    x * 2f - 1f + 0.1f,
+                    y * 2f - 1f + 0.1f,
                     ((float)draw.X + (float)draw.Width) / (float)Texture.Width,
                     ((float)draw.Y + (float)draw.Height) / (float)Texture.Height
                 };

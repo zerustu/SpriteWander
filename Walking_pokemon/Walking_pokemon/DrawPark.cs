@@ -191,9 +191,12 @@ namespace Walking_pokemon
             controls ControlForm = new controls();
             ControlForm.Show();
             InitializeComponent();
-            MaximizeEverything();
-            gLControl.Location = getTopLeft();
-            gLControl.Size = getFullScreensSize();
+            //MaximizeEverything();
+            Rectangle screen = Screen.PrimaryScreen.Bounds;
+            this.Location = screen.Location;
+            this.Size = screen.Size;
+            gLControl.Location = screen.Location;
+            gLControl.Size = screen.Size;
         }
 
         private void MaximizeEverything()
