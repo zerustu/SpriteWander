@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using Newtonsoft.Json;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Walking_pokemon.Pokemon
 {
@@ -78,23 +79,40 @@ namespace Walking_pokemon.Pokemon
                 float[] vertices = {
                     (X - 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
                     (Y - 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
+                    (float)draw.X / (float)draw.Width,
+                    (float)draw.Y / (float)draw.Height,
                     (X + 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
                     (Y - 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
+                    ((float)draw.X + (float)draw.Width) / (float)draw.Width,
+                    (float)draw.Y / (float)draw.Height,
+                    (X - 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
+                    (Y + 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
+                    (float)draw.X / (float)draw.Width,
+                    ((float)draw.Y + (float)draw.Height) / (float)draw.Height,
                     (X + 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
                     (Y + 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f,
-                    (X - 0.1f + MIN_X )/(MIN_X + MAX_X) * 2f - 1f,
-                    (Y + 0.1f + MIN_Y )/(MIN_Y + MAX_Y) * 2f - 1f
+                    ((float)draw.X + (float)draw.Width) / (float)draw.Width,
+                    ((float)draw.Y + (float)draw.Height) / (float)draw.Height
                 };
                 return vertices;
-            } 
+            }
         }
-        public Point oldPos;
+        uint[] indices = {  // note that we start from 0!
+            0, 1, 2,   // first triangle
+            1, 2, 3    // second triangle
+        };
+        public Texture Texture;
+        int VertexBufferObject;
+        int VertexArrayObject;
+        int ElementBufferObject;
+
 
         //animations variable
         protected Animation animations;
         protected double animTimer = 0;
         protected string JsonAnimationPath;
-        public Image Spritesheet;
+        protected int textureWidth;
+        protected int textureHeight;
         public Rectangle SpriteRect
         {
             get
@@ -133,7 +151,7 @@ namespace Walking_pokemon.Pokemon
 
 
 
-        public Pokemon(PokemonInfo info, Pokepark Park, float scale = -1)
+        public Pokemon(PokemonInfo info, Pokepark Park, Texture texture, int textureWidth, int textureHeight, int program, float scale = -1)
         {
             this.Park = Park;
             rng = new Random();
@@ -146,8 +164,29 @@ namespace Walking_pokemon.Pokemon
             JsonAnimationPath = info.animPath;
             string jsonAnim = System.IO.File.ReadAllText(JsonAnimationPath);
             animations = JsonConvert.DeserializeObject<Animation>(jsonAnim);
-            Spritesheet = Image.FromFile(info.imagePath);
+            Texture = texture;
+            this.textureWidth = textureWidth;
+            this.textureHeight = textureHeight;
             //maxSize = animations.getMax();
+            VertexArrayObject = GL.GenVertexArray();
+            GL.BindVertexArray(VertexArrayObject);
+
+            VertexBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, Pos.Length * sizeof(float), Pos, BufferUsageHint.StreamDraw);
+
+            Park.shader.Use();
+            int CoordLocation = GL.GetAttribLocation(Park.shader.Handle, "aPosition");
+            GL.EnableVertexAttribArray(CoordLocation);
+            GL.VertexAttribPointer(CoordLocation, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
+            int textLocation = GL.GetAttribLocation(Park.shader.Handle, "aTexCoord");
+            GL.EnableVertexAttribArray(textLocation);
+            GL.VertexAttribPointer(textLocation, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
+
+            ElementBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
         }
 
 
@@ -217,6 +256,25 @@ namespace Walking_pokemon.Pokemon
                     timer = 100;
                     break;
             }
+        }
+
+        public void Bind()
+        {
+            GL.BindVertexArray(VertexArrayObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+            Texture.Use();
+        }
+
+        public void Render()
+        {
+            GL.BufferData(BufferTarget.ArrayBuffer, Pos.Length * sizeof(float), Pos, BufferUsageHint.StreamDraw);
+            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+        }
+
+        public void Dispose()
+        {
+            GL.DeleteBuffer(VertexBufferObject);
         }
     }
 }

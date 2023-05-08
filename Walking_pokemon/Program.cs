@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using Walking_pokemon.Pokemon;
 
 namespace Walking_pokemon
@@ -19,7 +18,7 @@ namespace Walking_pokemon
         [STAThread]
         static void Main()
         {
-            Park = new Pokepark(800, 600, false);
+            Park = new Pokepark(800, 800, false);
             Park.Run();
         }
     }
