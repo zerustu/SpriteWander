@@ -10,7 +10,7 @@ namespace Walking_pokemon.Pokemon
     public class Pokemon
     {
         // Position limits
-        private Pokepark Park;
+        private DrawPark Park;
         protected float MIN_X = 0;
         protected float MAX_X = 1;
         protected float MIN_Y = 0;
@@ -151,7 +151,7 @@ namespace Walking_pokemon.Pokemon
 
 
 
-        public Pokemon(PokemonInfo info, Pokepark Park, Texture texture, int textureWidth, int textureHeight, int program, float scale = -1)
+        public Pokemon(PokemonInfo info, DrawPark Park, Texture texture, int textureWidth, int textureHeight, int program, float scale = -1)
         {
             this.Park = Park;
             rng = new Random();
@@ -275,6 +275,8 @@ namespace Walking_pokemon.Pokemon
         public void Dispose()
         {
             GL.DeleteBuffer(VertexBufferObject);
+            GL.DeleteBuffer(ElementBufferObject);
+            GL.DeleteBuffer(VertexArrayObject);
         }
     }
 }

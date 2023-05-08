@@ -1,0 +1,156 @@
+{
+  "animation": {
+    "stand": [
+      {
+        "length": 5,
+        "x": 84,
+        "y": 28,
+        "width": 21,
+        "height": 31
+      },
+      {
+        "length": 5,
+        "x": 117,
+        "y": 28,
+        "width": 21,
+        "height": 31
+      }
+    ],
+    "walkdown": [
+      {
+        "length": 3,
+        "x": 171,
+        "y": 29,
+        "width": 21,
+        "height": 31
+      },
+      {
+        "length": 2,
+        "x": 205,
+        "y": 29,
+        "width": 21,
+        "height": 31
+      },
+      {
+        "length": 3,
+        "x": 240,
+        "y": 29,
+        "width": 21,
+        "height": 31
+      },
+      {
+        "length": 2,
+        "x": 205,
+        "y": 29,
+        "width": 21,
+        "height": 31
+      }
+    ],
+    "walkleft": [
+      {
+        "length": 3,
+        "x": 169,
+        "y": 96,
+        "width": 29,
+        "height": 32
+      },
+      {
+        "length": 2,
+        "x": 204,
+        "y": 96,
+        "width": 29,
+        "height": 32
+      },
+      {
+        "length": 3,
+        "x": 240,
+        "y": 96,
+        "width": 29,
+        "height": 32
+      },
+      {
+        "length": 2,
+        "x": 204,
+        "y": 96,
+        "width": 29,
+        "height": 32
+      }
+    ],
+    "walkup": [
+      {
+        "length": 3,
+        "x": 171,
+        "y": 62,
+        "width": 21,
+        "height": 31
+      },
+      {
+        "length": 2,
+        "x": 205,
+        "y": 62,
+        "width": 21,
+        "height": 31
+      },
+      {
+        "length": 3,
+        "x": 240,
+        "y": 62,
+        "width": 21,
+        "height": 31
+      },
+      {
+        "length": 2,
+        "x": 205,
+        "y": 62,
+        "width": 21,
+        "height": 31
+      }
+    ],
+    "walkright": [
+      {
+        "length": 3,
+        "x": 169,
+        "y": 206,
+        "width": 29,
+        "height": 32
+      },
+      {
+        "length": 2,
+        "x": 204,
+        "y": 206,
+        "width": 29,
+        "height": 32
+      },
+      {
+        "length": 3,
+        "x": 240,
+        "y": 206,
+        "width": 29,
+        "height": 32
+      },
+      {
+        "length": 2,
+        "x": 204,
+        "y": 206,
+        "width": 29,
+        "height": 32
+      }
+    ],
+    "sleep": [
+      {
+        "length": 10,
+        "x": 7,
+        "y": 74,
+        "width": 29,
+        "height": 32
+      },
+      {
+        "length": 10,
+        "x": 38,
+        "y": 74,
+        "width": 29,
+        "height": 32
+      }
+    ]
+  }
+}

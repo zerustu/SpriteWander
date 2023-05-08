@@ -1,0 +1,156 @@
+{
+  "animation": {
+    "stand": [
+      {
+        "length": 5,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 5,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      }
+    ],
+    "walkdown": [
+      {
+        "length": 3,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 2,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 3,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 2,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      }
+    ],
+    "walkleft": [
+      {
+        "length": 3,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 2,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 3,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 2,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      }
+    ],
+    "walkup": [
+      {
+        "length": 3,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 2,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 3,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 2,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      }
+    ],
+    "walkright": [
+      {
+        "length": 3,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 2,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 3,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 2,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      }
+    ],
+    "sleep": [
+      {
+        "length": 10,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      },
+      {
+        "length": 10,
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 210
+      }
+    ]
+  }
+}
