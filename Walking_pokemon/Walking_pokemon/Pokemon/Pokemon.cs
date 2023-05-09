@@ -19,6 +19,7 @@ namespace Walking_pokemon.Pokemon
 
 
         protected int maxSize = 30;
+        float halfSize { get => maxSize / 2 * Scale; }
 
         //position
         protected float x = 20;
@@ -32,14 +33,14 @@ namespace Walking_pokemon.Pokemon
             }
             set
             {
-                if (value < MIN_X)
+                if (value < MIN_X + halfSize)
                 {
-                    x = MIN_X;
+                    x = MIN_X + halfSize;
                     timer = 0;
                 }
-                else if (value > MAX_X)
+                else if (value > MAX_X - halfSize)
                 {
-                    x = MAX_X;
+                    x = MAX_X - halfSize;
                     timer = 0;
                 }
                 else
@@ -57,14 +58,14 @@ namespace Walking_pokemon.Pokemon
             }
             set
             {
-                if (value < MIN_Y)
+                if (value < MIN_Y + halfSize)
                 {
-                    y = MIN_Y;
+                    y = MIN_Y + halfSize;
                     timer = 0;
                 }
-                else if (value > MAX_Y)
+                else if (value > MAX_Y - halfSize)
                 {
-                    y = MAX_Y;
+                    y = MAX_Y - halfSize;
                     timer = 0;
                 }
                 else
@@ -76,7 +77,7 @@ namespace Walking_pokemon.Pokemon
 
         private float[] Center
         {
-            get => new float[]{ (X - MIN_X) / (MAX_X - MIN_X), (Y - MIN_Y) / (MAX_Y - MIN_Y)};
+            get => new float[] { (X - MIN_X) / (MAX_X - MIN_X), (Y - MIN_Y) / (MAX_Y - MIN_Y) };
         }
 
         public float[] Pos
@@ -85,25 +86,25 @@ namespace Walking_pokemon.Pokemon
             {
                 Rectangle draw = SpriteRect;
                 float[] center = Center;
-                x = Center[0];
-                y = Center[1];
+                float cx = center[0];
+                float cy = center[1];
                 float[] vertices = {
-                    x * 2f - 1f - 0.1f,
-                    y * 2f - 1f - 0.1f,
-                    (float)draw.X / (float)Texture.Width,
-                    (float)draw.Y / (float)Texture.Height,
-                    x * 2f - 1f + 0.1f,
-                    y * 2f - 1f - 0.1f  ,
+                    cx * 2f - 1f - draw.Width * Scale / Park.Width, //bas gauche
+                    cy * 2f - 1f - draw.Height * Scale / Park.Height,
+                    ((float)draw.X) / (float)Texture.Width,
+                    1-((float)draw.Y + draw.Height) / (float)Texture.Height,
+                    cx * 2f - 1f + draw.Width * Scale / Park.Width, // bas droite
+                    cy * 2f - 1f - draw.Height * Scale / Park.Height,
+                    ((float)draw.X + draw.Width) / (float)Texture.Width,
+                    1-((float)draw.Y + draw.Height) / (float)Texture.Height,
+                    cx * 2f - 1f - draw.Width * Scale / Park.Width, // haut gauche
+                    cy * 2f - 1f + draw.Height * Scale / Park.Height,
+                    ((float)draw.X) / (float)Texture.Width,
+                    1-((float)draw.Y) / (float)Texture.Height,
+                    cx * 2f - 1f + draw.Width * Scale / Park.Width, //hautdroite
+                    cy * 2f - 1f + draw.Height * Scale / Park.Height,
                     ((float)draw.X + (float)draw.Width) / (float)Texture.Width,
-                    (float)draw.Y / (float)Texture.Height,
-                    x * 2f - 1f - 0.1f,
-                    y * 2f - 1f + 0.1f,
-                    (float)draw.X / (float)Texture.Width,
-                    ((float)draw.Y + (float)draw.Height) / (float)Texture.Height,
-                    x * 2f - 1f + 0.1f,
-                    y * 2f - 1f + 0.1f,
-                    ((float)draw.X + (float)draw.Width) / (float)Texture.Width,
-                    ((float)draw.Y + (float)draw.Height) / (float)Texture.Height
+                    1-((float)draw.Y) / (float)Texture.Height
                 };
                 return vertices;
             }
@@ -168,8 +169,8 @@ namespace Walking_pokemon.Pokemon
             rng = new Random();
             if (scale < 0) this.scale = (float)(rng.NextDouble() + 2.5);
             else this.scale = scale;
-            X = 0.5f;
-            Y = 0.5f;
+            X = MAX_X / 2;
+            Y = MAX_Y / 2;
             this.scale *= info.scale;
 
             JsonAnimationPath = info.animPath;
@@ -178,7 +179,7 @@ namespace Walking_pokemon.Pokemon
             Texture = texture;
             this.textureWidth = textureWidth;
             this.textureHeight = textureHeight;
-            //maxSize = animations.getMax();
+            maxSize = animations.getMax();
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
 
@@ -237,17 +238,17 @@ namespace Walking_pokemon.Pokemon
                     {
                         switch (subState) // move
                         {
-                            case 0:
+                            case 0: //left
                                 X += speed * (float)time;
                                 break;
-                            case 1:
-                                Y += speed * (float)time;
+                            case 1: //down
+                                Y -= speed * (float)time;
                                 break;
-                            case 2:
+                            case 2: //right
                                 X -= speed * (float)time;
                                 break;
-                            case 3:
-                                Y -= speed * (float)time;
+                            case 3: //up
+                                Y += speed * (float)time;
                                 break;
                             default:
                                 break;
