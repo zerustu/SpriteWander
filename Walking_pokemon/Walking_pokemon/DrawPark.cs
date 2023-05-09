@@ -143,6 +143,37 @@ namespace Walking_pokemon
 
         [DllImport("user32.dll")]
         static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+        /// <summary>
+        /// Make the form (specified by its handle) a window that supports transparency.
+        /// </summary>
+        /// <param name="Handle">The window to make transparency supporting</param>
+        public void SetFormTransparent(IntPtr Handle)
+        {
+            oldWindowLong = GetWindowLong(Handle, (int)GetWindowLongConst.GWL_EXSTYLE);
+            SetWindowLong(Handle, (int)GetWindowLongConst.GWL_EXSTYLE, Convert.ToInt32(oldWindowLong | (uint)WindowStyles.WS_EX_LAYERED | (uint)WindowStyles.WS_EX_TRANSPARENT));
+        }
+
+        /// <summary>
+        /// Make the form (specified by its handle) a normal type of window (doesn't support transparency).
+        /// </summary>
+        /// <param name="Handle">The Window to make normal</param>
+        public void SetFormNormal(IntPtr Handle)
+        {
+            SetWindowLong(Handle, (int)GetWindowLongConst.GWL_EXSTYLE, Convert.ToInt32(oldWindowLong | (uint)WindowStyles.WS_EX_LAYERED));
+        }
+
+        /// <summary>
+        /// Makes the form change White to Transparent and clickthrough-able
+        /// Can be modified to make the form translucent (with different opacities) and change the Transparency Color.
+        /// </summary>
+        public void SetTheLayeredWindowAttribute()
+        {
+            uint transparentColor = 0xff007f97;
+
+            SetLayeredWindowAttributes(this.Handle, transparentColor, 125, 0x2);
+
+            this.TransparencyKey = Color.FromArgb(0, 127, 151);
+        }
 
         /// <summary>
         /// Finds the Size of all computer screens combined (assumes screens are left to right, not above and below).
@@ -186,17 +217,19 @@ namespace Walking_pokemon
 
         public DrawPark()
         {
-            Pokemons = new List<Walking_pokemon.Pokemon.Pokemon>();
-            Textures = new Dictionary<string, Texture>();
-            controls ControlForm = new controls();
-            ControlForm.Show();
             InitializeComponent();
+
             //MaximizeEverything();
+
+            SetFormTransparent(this.Handle);
+
+            //SetTheLayeredWindowAttribute();
             Rectangle screen = Screen.PrimaryScreen.Bounds;
-            this.Location = screen.Location;
-            this.Size = screen.Size;
+            this.Bounds = screen;
             gLControl.Location = screen.Location;
             gLControl.Size = screen.Size;
+            Pokemons = new List<Walking_pokemon.Pokemon.Pokemon>();
+            Textures = new Dictionary<string, Texture>();
         }
 
         private void MaximizeEverything()
@@ -222,7 +255,7 @@ namespace Walking_pokemon
             {
                 foreach (Pokemon.Pokemon pokemon in Pokemons)
                 {
-                    pokemon.Tick(_timer.Interval / 1000.0);
+                    pokemon.Tick(_timer.Interval / 200.0);
                 }
                 Render();
             };
@@ -245,6 +278,9 @@ namespace Walking_pokemon
             gLControl.Invalidate();
             int texture0 = GL.GetUniformLocation(shader.Handle, "texture0");
             GL.Uniform1(texture0, 0);
+            controls ControlForm = new controls();
+            ControlForm.Show();
+            //ControlForm.Focus();
         }
 
         private void GLControl_Resize(object sender, EventArgs e)
@@ -316,6 +352,16 @@ namespace Walking_pokemon
             GL.DeleteProgram(shader.Handle);
             shader.Dispose();
             this.Close();
+        }
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                // Turn on WS_EX_TOOLWINDOW style bit
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x80;
+                return cp;
+            }
         }
     }
 }

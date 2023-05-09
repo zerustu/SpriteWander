@@ -47,10 +47,12 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(800, 450);
             Controls.Add(gLControl);
             FormBorderStyle = FormBorderStyle.None;
             Name = "DrawPark";
+            ShowInTaskbar = false;
             Text = "DrawPark";
             TopMost = true;
             TransparencyKey = SystemColors.Control;
