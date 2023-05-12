@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CommandLine;
 
 namespace Walking_pokemon
 {
     class Options
     {
-        public int TickFrequency;
+        [Option('t', "tickFreq", Default = 60, HelpText = "The tick frequency in updates per second.")]
+        public int TickFrequency { get; set; }
 
-        public Options(int tickFrequency = 60)
-        {
-            TickFrequency = tickFrequency;
-        }
+        [Option('l', "list", Default = "./EntityList.json", HelpText = "path to the list of entities.")]
+        public string EList { get; set; }
+
+        [Option('a', "alpha", Default = 0.6, HelpText = "Opacity of the entites on the screen.")]
+        public double Alpha { get; set; }
     }
 }
