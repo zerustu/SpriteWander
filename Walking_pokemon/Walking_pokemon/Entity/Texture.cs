@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using System.Drawing.Imaging;
 
-namespace Walking_pokemon.Pokemon
+namespace Walking_pokemon.Entity
 {
     public class Texture
     {
@@ -11,7 +11,7 @@ namespace Walking_pokemon.Pokemon
 
         public Texture(string Path)
         {
-            Bitmap bitmap = new Bitmap(Path);
+            Bitmap bitmap = new(Path);
             Width = bitmap.Width;
             Height = bitmap.Height;
             bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);

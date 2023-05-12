@@ -1,36 +1,15 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Walking_pokemon.Pokemon;
+using Walking_pokemon.Entity;
 
 namespace Walking_pokemon
 {
     public partial class DrawPark : Form
     {
-        public List<Walking_pokemon.Pokemon.Pokemon> Pokemons;
-        Dictionary<string, Texture> Textures;
+        public List<Entity.Entity> Entities;
+        readonly Dictionary<string, Texture> Textures;
         public Shader shader;
-
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool BringWindowToTop(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
-        public static extern IntPtr SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int x, int Y, int cx, int cy, int wFlags);
-
-        [DllImport("user32.dll")]
-        static extern int SendMessage(IntPtr hWnd, uint wMsg, UIntPtr wParam, IntPtr lParam); //used for maximizing the screen
-
-        const int WM_SYSCOMMAND = 0x0112; //used for maximizing the screen.
-        const int myWParam = 0xf120; //used for maximizing the screen.
-        const int myLparam = 0x5073d; //used for maximizing the screen.
-
 
         int oldWindowLong;
 
@@ -129,20 +108,12 @@ namespace Walking_pokemon
             GWL_ID = (-12)
         }
 
-        public enum LWA
-        {
-            ColorKey = 0x1,
-            Alpha = 0x2,
-        }
-
         [DllImport("user32.dll", SetLastError = true)]
         static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
         [DllImport("user32.dll")]
         static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-        [DllImport("user32.dll")]
-        static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
         /// <summary>
         /// Make the form (specified by its handle) a window that supports transparency.
         /// </summary>
@@ -153,95 +124,30 @@ namespace Walking_pokemon
             SetWindowLong(Handle, (int)GetWindowLongConst.GWL_EXSTYLE, Convert.ToInt32(oldWindowLong | (uint)WindowStyles.WS_EX_LAYERED | (uint)WindowStyles.WS_EX_TRANSPARENT));
         }
 
-        /// <summary>
-        /// Make the form (specified by its handle) a normal type of window (doesn't support transparency).
-        /// </summary>
-        /// <param name="Handle">The Window to make normal</param>
-        public void SetFormNormal(IntPtr Handle)
-        {
-            SetWindowLong(Handle, (int)GetWindowLongConst.GWL_EXSTYLE, Convert.ToInt32(oldWindowLong | (uint)WindowStyles.WS_EX_LAYERED));
-        }
-
-        /// <summary>
-        /// Makes the form change White to Transparent and clickthrough-able
-        /// Can be modified to make the form translucent (with different opacities) and change the Transparency Color.
-        /// </summary>
-        public void SetTheLayeredWindowAttribute()
-        {
-            uint transparentColor = 0xff007f97;
-
-            SetLayeredWindowAttributes(this.Handle, transparentColor, 125, 0x2);
-
-            this.TransparencyKey = Color.FromArgb(0, 127, 151);
-        }
-
-        /// <summary>
-        /// Finds the Size of all computer screens combined (assumes screens are left to right, not above and below).
-        /// </summary>
-        /// <returns>The width and height of all screens combined</returns>
-        public static Size getFullScreensSize()
-        {
-            int height = int.MinValue;
-            int width = 0;
-
-            foreach (Screen screen in System.Windows.Forms.Screen.AllScreens)
-            {
-                //take largest height
-                height = Math.Max(screen.WorkingArea.Height, height);
-
-                width += screen.Bounds.Width;
-            }
-
-            return new Size(width, height);
-        }
-
-        /// <summary>
-        /// Finds the top left pixel position (with multiple screens this is often not 0,0)
-        /// </summary>
-        /// <returns>Position of top left pixel</returns>
-        public static Point getTopLeft()
-        {
-            int minX = int.MaxValue;
-            int minY = int.MaxValue;
-
-            foreach (Screen screen in System.Windows.Forms.Screen.AllScreens)
-            {
-                minX = Math.Min(screen.WorkingArea.Left, minX);
-                minY = Math.Min(screen.WorkingArea.Top, minY);
-            }
-
-            return new Point(minX, minY);
-        }
-
-        private System.Windows.Forms.Timer _timer = null!;
+        private System.Windows.Forms.Timer TickTimer = null!;
 
         public DrawPark()
         {
             InitializeComponent();
 
             //MaximizeEverything();
+            Opacity = Program._options.Alpha;
 
-            SetFormTransparent(this.Handle);
+            SetFormTransparent(Handle);
 
             //SetTheLayeredWindowAttribute();
             Rectangle screen = Screen.PrimaryScreen.Bounds;
-            this.Bounds = screen;
+            Bounds = screen;
             gLControl.Location = screen.Location;
             gLControl.Size = screen.Size;
-            Pokemons = new List<Walking_pokemon.Pokemon.Pokemon>();
+            Entities = new List<Entity.Entity>();
             Textures = new Dictionary<string, Texture>();
-        }
-
-        private void MaximizeEverything()
-        {
-            this.Location = getTopLeft();
-            this.Size = getFullScreensSize();
-
-            SendMessage(this.Handle, WM_SYSCOMMAND, (UIntPtr)myWParam, (IntPtr)myLparam);
         }
 
         private void DrawPark_Load(object sender, EventArgs e)
         {
+            Controls ControlForm = new Controls();
+            ControlForm.Show();
         }
 
         private void GLControl_Load(object sender, EventArgs e)
@@ -250,24 +156,25 @@ namespace Walking_pokemon
             gLControl.Paint += GLControl_Paint;
 
             // Redraw the screen every 1/20 of a second.
-            _timer = new System.Windows.Forms.Timer();
-            _timer.Tick += (sender, e) =>
+            TickTimer = new System.Windows.Forms.Timer();
+            TickTimer.Tick += (sender, e) =>
             {
-                foreach (Pokemon.Pokemon pokemon in Pokemons)
+                foreach (Entity.Entity Entity in Entities)
                 {
-                    pokemon.Tick(_timer.Interval / 200.0);
+                    Entity.Tick(TickTimer.Interval / 200.0);
                 }
                 Render();
             };
-            _timer.Interval = 50;   // 1000 ms per sec / 50 ms per frame = 20 FPS
-            _timer.Start();
+            TickTimer.Interval = (int)(1000f / Program._options.TickFrequency);   // 1000 ms per sec / 50 ms per frame = 20 FPS
+            TickTimer.Start();
 
             // Ensure that the viewport and projection matrix are set correctly initially.
             GLControl_Resize(gLControl, EventArgs.Empty);
 
 
             gLControl.MakeCurrent();
-            GL.ClearColor(this.BackColor);
+            gLControl.BackColor = BackColor;
+            GL.ClearColor(BackColor);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             GL.Enable(EnableCap.AlphaTest);
@@ -278,8 +185,6 @@ namespace Walking_pokemon
             gLControl.Invalidate();
             int texture0 = GL.GetUniformLocation(shader.Handle, "texture0");
             GL.Uniform1(texture0, 0);
-            controls ControlForm = new controls();
-            ControlForm.Show();
             //ControlForm.Focus();
         }
 
@@ -297,19 +202,17 @@ namespace Walking_pokemon
         {
             Render();
         }
-        public void AddPokemon(string specie)
+        public void AddEntity(string specie)
         {
-            PokemonInfo info;
-            if (!Program.pokedex.TryGetValue(specie, out info)) Debug.WriteLine("can't find ifo for pokemon " + specie);
+            if (!Program.AllEntities.TryGetValue(specie, out EntityInfo info)) Debug.WriteLine("can't find ifo for pokemon " + specie);
             else
             {
-                Texture texture;
-                if (!Textures.TryGetValue(specie, out texture))
+                if (!Textures.TryGetValue(specie, out Texture texture))
                 {
                     texture = new Texture(info.imagePath);
                     Textures.Add(specie, texture);
                 }
-                Pokemons.Add(new Walking_pokemon.Pokemon.Pokemon(info, this, texture, texture.Width, texture.Height, shader.Handle));
+                Entities.Add(new Entity.Entity(info, this, texture));
             }
         }
 
@@ -322,7 +225,7 @@ namespace Walking_pokemon
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 
-            foreach (Pokemon.Pokemon pokemon in Pokemons)
+            foreach (Entity.Entity pokemon in Entities)
             {
                 shader.Use();
                 pokemon.Bind();
@@ -334,11 +237,11 @@ namespace Walking_pokemon
 
         public void Exit()
         {
-            _timer.Stop();
-            _timer.Dispose();
-            foreach (var pokemon in Pokemons)
+            TickTimer.Stop();
+            TickTimer.Dispose();
+            foreach (var Entity in Entities)
             {
-                pokemon.Dispose();
+                Entity.Dispose();
             }
             foreach (Texture texture in Textures.Values)
             {
@@ -351,17 +254,7 @@ namespace Walking_pokemon
 
             GL.DeleteProgram(shader.Handle);
             shader.Dispose();
-            this.Close();
-        }
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                // Turn on WS_EX_TOOLWINDOW style bit
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x80;
-                return cp;
-            }
+            Close();
         }
     }
 }

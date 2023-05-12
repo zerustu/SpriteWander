@@ -1,7 +1,7 @@
 ﻿
 namespace Walking_pokemon
 {
-    partial class controls
+    partial class Controls
     {
         /// <summary>
         /// Required designer variable.
@@ -31,15 +31,16 @@ namespace Walking_pokemon
         {
             AddButton = new Button();
             CloseButton = new Button();
-            PokemonList = new ListBox();
+            EntityList = new ListBox();
             SuspendLayout();
             // 
             // AddButton
             // 
-            AddButton.Location = new Point(18, 383);
+            AddButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            AddButton.Location = new Point(10, 376);
             AddButton.Margin = new Padding(4, 3, 4, 3);
             AddButton.Name = "AddButton";
-            AddButton.Size = new Size(139, 63);
+            AddButton.Size = new Size(142, 70);
             AddButton.TabIndex = 0;
             AddButton.Text = "Add 1";
             AddButton.UseVisualStyleBackColor = true;
@@ -47,37 +48,40 @@ namespace Walking_pokemon
             // 
             // CloseButton
             // 
-            CloseButton.Location = new Point(163, 383);
+            CloseButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            CloseButton.Location = new Point(160, 376);
             CloseButton.Margin = new Padding(4, 3, 4, 3);
             CloseButton.Name = "CloseButton";
-            CloseButton.Size = new Size(148, 62);
+            CloseButton.Size = new Size(155, 70);
             CloseButton.TabIndex = 1;
             CloseButton.Text = "Close app";
             CloseButton.UseVisualStyleBackColor = true;
             CloseButton.Click += CloseButton_Click;
             // 
-            // PokemonList
+            // EntityList
             // 
-            PokemonList.FormattingEnabled = true;
-            PokemonList.ItemHeight = 15;
-            PokemonList.Location = new Point(10, 6);
-            PokemonList.Margin = new Padding(4, 3, 4, 3);
-            PokemonList.Name = "PokemonList";
-            PokemonList.Size = new Size(299, 349);
-            PokemonList.TabIndex = 2;
+            EntityList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            EntityList.FormattingEnabled = true;
+            EntityList.ItemHeight = 15;
+            EntityList.Location = new Point(10, 6);
+            EntityList.Margin = new Padding(4, 3, 4, 3);
+            EntityList.Name = "EntityList";
+            EntityList.Size = new Size(305, 364);
+            EntityList.TabIndex = 2;
             // 
             // controls
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(328, 456);
-            Controls.Add(PokemonList);
+            Controls.Add(EntityList);
             Controls.Add(CloseButton);
             Controls.Add(AddButton);
             Margin = new Padding(4, 3, 4, 3);
             Name = "controls";
             Text = "controls";
-            Load += controls_Load;
+            FormClosing += CloseMainApp;
+            Load += Controls_Load;
             ResumeLayout(false);
         }
 
@@ -85,6 +89,6 @@ namespace Walking_pokemon
 
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.Button CloseButton;
-        private System.Windows.Forms.ListBox PokemonList;
+        private System.Windows.Forms.ListBox EntityList;
     }
 }

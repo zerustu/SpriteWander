@@ -1,9 +1,9 @@
 {
 	"absol":
 	{
-		"animPath":".\\pokemons\\absol2.json",
+		"animPath":".\\pokemons\\absol.json",
 		"scale":1.0,
-		"imagePath":".\\pokemons\\absol2.png"
+		"imagePath":".\\pokemons\\absol.png"
 	},
 	"vulpix":
 	{
@@ -19,7 +19,7 @@
 	},
 	"shinx":
 	{
-		"animPath":".\\pokemons\\shinx2.json",
+		"animPath":".\\pokemons\\shinx.json",
 		"scale": 0.666666,
 		"imagePath":".\\pokemons\\lixyluxioluxray.png"
 	},

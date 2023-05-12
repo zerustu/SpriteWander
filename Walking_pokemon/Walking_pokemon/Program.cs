@@ -1,26 +1,34 @@
 ﻿using Newtonsoft.Json;
-using Walking_pokemon.Pokemon;
+using Walking_pokemon.Entity;
+using CommandLine;
 
 namespace Walking_pokemon
 {
     static class Program
     {
 
-        public static Dictionary<string, PokemonInfo> pokedex = JsonConvert.DeserializeObject<Dictionary<string, PokemonInfo>>(System.IO.File.ReadAllText(@".\pokemons.json"));
+        public static Dictionary<string, EntityInfo>? AllEntities;
 
         public static DrawPark? Park;
+
+        public static Options? _options;
 
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Park = new DrawPark();
-            Application.Run(Park);
+            var parser = new Parser(with => with.EnableDashDash = true);
+            parser.ParseArguments<Options>(args).WithParsed<Options>(o =>
+            {
+                _options = o;
+                AllEntities = JsonConvert.DeserializeObject<Dictionary<string, EntityInfo>>(File.ReadAllText(o.EList));
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Park = new DrawPark();
+                Application.Run(Park);
+            });
         }
     }
 }

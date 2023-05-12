@@ -1,30 +1,36 @@
-﻿namespace Walking_pokemon
+﻿using System.Configuration;
+
+namespace Walking_pokemon
 {
-    public partial class controls : Form
+    public partial class Controls : Form
     {
-        public controls()
+        public Controls()
         {
             InitializeComponent();
         }
 
-        private void controls_Load(object sender, EventArgs e)
+        private void Controls_Load(object sender, EventArgs e)
         {
-            foreach (string pokemon in Program.pokedex.Keys)
+            foreach (string Name in Program.AllEntities.Keys)
             {
-                PokemonList.Items.Add(pokemon);
+                EntityList.Items.Add(Name);
             }
-            PokemonList.SelectedIndex = 0;
+            EntityList.SelectedIndex = 0;
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            Program.Park.Exit();
             this.Close();
         }
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            Program.Park.AddPokemon(this.PokemonList.SelectedItem.ToString());
+            Program.Park.AddEntity(this.EntityList.SelectedItem.ToString());
+        }
+
+        private void CloseMainApp(object sender, EventArgs e)
+        {
+            Program.Park.Exit();
         }
     }
 }

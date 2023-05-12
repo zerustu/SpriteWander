@@ -1,25 +1,20 @@
 ﻿using Newtonsoft.Json;
 using OpenTK.Graphics.OpenGL4;
 
-namespace Walking_pokemon.Pokemon
+namespace Walking_pokemon.Entity
 {
-    public class Pokemon
+    public class Entity
     {
         // Position limits
-        private DrawPark Park;
-        protected float MIN_X { get => Park.Left; }
+        private readonly DrawPark Park;
+        protected  float MIN_X { get => Park.Left; }
         protected float MAX_X { get => Park.Right; }
         protected float MIN_Y { get => Park.Top; }
         protected float MAX_Y { get => Park.Bottom; }
 
-        //protected float MIN_X = 0;
-        //protected float MAX_X = 1;
-        //protected float MIN_Y = 0;
-        //protected float MAX_Y = 1;
 
-
-        protected int maxSize = 30;
-        float halfSize { get => maxSize / 2 * Scale; }
+        protected readonly int maxSize = 30;
+        float HalfSize { get => maxSize / 2 * Scale; }
 
         //position
         protected float x = 20;
@@ -33,14 +28,14 @@ namespace Walking_pokemon.Pokemon
             }
             set
             {
-                if (value < MIN_X + halfSize)
+                if (value < MIN_X + HalfSize)
                 {
-                    x = MIN_X + halfSize;
+                    x = MIN_X + HalfSize;
                     timer = 0;
                 }
-                else if (value > MAX_X - halfSize)
+                else if (value > MAX_X - HalfSize)
                 {
-                    x = MAX_X - halfSize;
+                    x = MAX_X - HalfSize;
                     timer = 0;
                 }
                 else
@@ -58,14 +53,14 @@ namespace Walking_pokemon.Pokemon
             }
             set
             {
-                if (value < MIN_Y + halfSize)
+                if (value < MIN_Y + HalfSize)
                 {
-                    y = MIN_Y + halfSize;
+                    y = MIN_Y + HalfSize;
                     timer = 0;
                 }
-                else if (value > MAX_Y - halfSize)
+                else if (value > MAX_Y - HalfSize)
                 {
-                    y = MAX_Y - halfSize;
+                    y = MAX_Y - HalfSize;
                     timer = 0;
                 }
                 else
@@ -75,20 +70,18 @@ namespace Walking_pokemon.Pokemon
             }
         }
 
-        private float[] Center
+        private float[] GetCenter()
         {
-            get => new float[] { (X - MIN_X) / (MAX_X - MIN_X), (Y - MIN_Y) / (MAX_Y - MIN_Y) };
+            return new float[] { (X - MIN_X) / (MAX_X - MIN_X), (Y - MIN_Y) / (MAX_Y - MIN_Y) };
         }
 
-        public float[] Pos
+        public float[] GetPos()
         {
-            get
-            {
-                Rectangle draw = SpriteRect;
-                float[] center = Center;
-                float cx = center[0];
-                float cy = center[1];
-                float[] vertices = {
+            Rectangle draw = GetSpriteRect();
+            float[] center = GetCenter();
+            float cx = center[0];
+            float cy = center[1];
+            float[] vertices = {
                     cx * 2f - 1f - draw.Width * Scale / Park.Width, //bas gauche
                     cy * 2f - 1f - draw.Height * Scale / Park.Height,
                     ((float)draw.X) / (float)Texture.Width,
@@ -106,48 +99,41 @@ namespace Walking_pokemon.Pokemon
                     ((float)draw.X + (float)draw.Width) / (float)Texture.Width,
                     1-((float)draw.Y) / (float)Texture.Height
                 };
-                return vertices;
-            }
+            return vertices;
         }
-        uint[] indices = {  // note that we start from 0!
+
+        private static readonly uint[] INDICES = {  // note that we start from 0!
             0, 1, 2,   // first triangle
             1, 2, 3    // second triangle
         };
-        public Texture Texture;
-        int VertexBufferObject;
-        int VertexArrayObject;
-        int ElementBufferObject;
+        public readonly Texture Texture;
+        readonly int VertexBufferObject;
+        readonly int VertexArrayObject;
+        readonly int ElementBufferObject;
 
 
         //animations variable
-        protected Animation animations;
+        protected readonly Animation animations;
         protected double animTimer = 0;
-        protected string JsonAnimationPath;
-        protected int textureWidth;
-        protected int textureHeight;
-        public Rectangle SpriteRect
+
+        public Rectangle GetSpriteRect()
         {
-            get
+            List<Frame> animFrames = animations.GetAnimList(state, subState);
+            while (true)
             {
-                List<frame> animFrames = animations.getAnimList(state, subState);
-                while (true)
+                int tFrame = 0;
+                foreach (Frame item in animFrames)
                 {
-                    int tFrame = 0;
-                    foreach (frame item in animFrames)
+                    tFrame += item.length;
+                    if (tFrame > animTimer)
                     {
-                        tFrame += item.length;
-                        if (tFrame > animTimer)
-                        {
-                            oldRect = item.Rect;
-                            return item.Rect;
-                        }
+                        return item.Rect;
                     }
-                    animTimer -= tFrame;
                 }
+                animTimer -= tFrame;
             }
         }
 
-        public Rectangle oldRect;
 
         //Pokemon state
         public int state = 0;
@@ -155,37 +141,31 @@ namespace Walking_pokemon.Pokemon
         protected int subState = 0;
         protected float speed = 0;
 
-        protected float scale = 0;
+        protected readonly float scale = 0;
 
-        public float Scale { get => scale; }
+        public float Scale => scale;
 
-        protected Random rng;
+        protected static readonly Random rng = new();
 
 
 
-        public Pokemon(PokemonInfo info, DrawPark Park, Texture texture, int textureWidth, int textureHeight, int program, float scale = -1)
+        public Entity(EntityInfo info, DrawPark Park, Texture texture, float scale = -1)
         {
             this.Park = Park;
-            rng = new Random();
-            if (scale < 0) this.scale = (float)(rng.NextDouble() + 2.5);
-            else this.scale = scale;
+            this.scale = scale < 0 ? (float)(rng.NextDouble() + 2.5) : scale;
             X = MAX_X / 2;
             Y = MAX_Y / 2;
             this.scale *= info.scale;
 
-            JsonAnimationPath = info.animPath;
-            string jsonAnim = System.IO.File.ReadAllText(JsonAnimationPath);
-            animations = JsonConvert.DeserializeObject<Animation>(jsonAnim);
+            animations = JsonConvert.DeserializeObject<Animation>(System.IO.File.ReadAllText(info.animPath));
             Texture = texture;
-            this.textureWidth = textureWidth;
-            this.textureHeight = textureHeight;
-            maxSize = animations.getMax();
+            maxSize = animations.GetMax();
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
 
             VertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, Pos.Length * sizeof(float), Pos, BufferUsageHint.StreamDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, GetPos().Length * sizeof(float), GetPos(), BufferUsageHint.StreamDraw);
 
             Park.shader.Use();
             int CoordLocation = GL.GetAttribLocation(Park.shader.Handle, "aPosition");
@@ -198,7 +178,7 @@ namespace Walking_pokemon.Pokemon
             ElementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
 
-            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, INDICES.Length * sizeof(uint), INDICES, BufferUsageHint.StaticDraw);
         }
 
 
@@ -280,8 +260,8 @@ namespace Walking_pokemon.Pokemon
 
         public void Render()
         {
-            GL.BufferData(BufferTarget.ArrayBuffer, Pos.Length * sizeof(float), Pos, BufferUsageHint.StreamDraw);
-            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.BufferData(BufferTarget.ArrayBuffer, GetPos().Length * sizeof(float), GetPos(), BufferUsageHint.StreamDraw);
+            GL.DrawElements(PrimitiveType.Triangles, INDICES.Length, DrawElementsType.UnsignedInt, 0);
         }
 
         public void Dispose()
