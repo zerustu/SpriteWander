@@ -1,6 +1,6 @@
 # SpriteWander
 
-SpriteWander is an application developed in C# that allows users to create an overlay on their screen where they can draw and animate sprites. It provides a customizable and interactive experience, allowing users to add various entities like Pokémon, pets, and more to their screen.
+SpriteWander is an application developed in C# that allows users to create an overlay on their screen where they can draw and animate sprites. It provides a customizable and interactive experience, allowing users to add various entities like PokÃ©mon, pets, and more to their screen.
 
 ## Getting Started
 
@@ -8,11 +8,11 @@ SpriteWander is an application developed in C# that allows users to create an ov
 
 1. Clone the repository: `git clone https://github.com/your/repository.git`
 2. Open the project in your preferred C# development environment (e.g., Visual Studio, Visual Studio Code).
+3. Build the project to generate the executable file (e.g., `SpriteWander.exe`).
 
 ### Usage
 
-1. Build the project to generate the executable file (e.g., `SpriteWander.exe`).
-2. Launch the application by double-clicking the executable file.
+- Launch the application by double-clicking the executable file.
 
 You can also run the application with command-line options:
 
@@ -21,6 +21,9 @@ You can also run the application with command-line options:
 - `--tickFreq` or `-t` (optional): Specifies the number of ticks per second for calculating entity positions and states (default: 50).
 - `--alpha` or `-a` (optional): Sets the opacity of the overlay (default: 0.6).
 - `--list` or `-l` (optional): Specifies the path to the JSON file containing the entity list to load (default: "./EntityList.json").
+
+For the application to run, you need to have a valide Entity list json file, either at the same place as the execution file, or use the -l argument to point to one.
+you can check the branch 'PokemonPack' for a exemple of Entity List and entities files. copy the content of this branch in the same folder as your execution file.
 
 ### Entity List JSON File
 
