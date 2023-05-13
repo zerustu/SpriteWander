@@ -6,7 +6,7 @@ this is an exemple of entity pack you can put in the SpriteWander application. c
 
 all the caracters belong to the Pokemon company
 
-most of the sprites ar from pokemon mystery dungeon (explorers of Sky mainly)
+most of the sprites ar from pokemon mystery dungeon (explorers of Time mainly)
 
 | Pokemon              | Origin                                   | Source                                                                           | Credits                    |
 |----------------------|------------------------------------------|----------------------------------------------------------------------------------|----------------------------|
