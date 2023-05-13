@@ -6,7 +6,7 @@ SpriteWander is an application developed in C# that allows users to create an ov
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/your/repository.git`
+1. Clone the repository: `git clone https://github.com/zerustu/SpriteWander.git`
 2. Open the project in your preferred C# development environment (e.g., Visual Studio, Visual Studio Code).
 3. Build the project to generate the executable file (e.g., `SpriteWander.exe`).
 
