@@ -212,7 +212,7 @@ namespace SpriteWander
                     texture = new Texture(info.imagePath);
                     Textures.Add(specie, texture);
                 }
-                Entities.Add(new Entity.Entity(info, this, texture));
+                //Entities.Add(new Entity.Entity(info, this, texture));
             }
         }
 
