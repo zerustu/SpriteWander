@@ -128,8 +128,6 @@ namespace SpriteWander
 
         public DrawPark(int max_x, int max_y)
         {
-            max_X = max_x;
-            max_Y = max_y;
 
             InitializeComponent();
 
@@ -143,6 +141,8 @@ namespace SpriteWander
             Bounds = screen;
             gLControl.Location = screen.Location;
             gLControl.Size = screen.Size;
+            max_X = screen.Width / Program._options.Scale - 1;
+            max_Y = screen.Height / Program._options.Scale - 1;
         }
 
         private void DrawPark_Load(object sender, EventArgs e)

@@ -12,5 +12,8 @@ namespace SpriteWander
 
         [Option('a', "alpha", Default = 0.6, HelpText = "Opacity of the entites on the screen.")]
         public double Alpha { get; set; }
+
+        [Option('s', "scale", Default = 40, HelpText = "size of a sprite in pixel (effectivly devide the screen in a grid of 'scale' pixel per side)")]
+        public int Scale { get; set; }
     }
 }

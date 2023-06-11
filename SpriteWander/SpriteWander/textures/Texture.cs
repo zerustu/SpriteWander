@@ -85,6 +85,7 @@ namespace SpriteWander.textures
         public abstract void Load();
         public abstract void Print();
         public abstract void Dispose();
+        public abstract int Lentgh(Animation animation);
         public AnimEvent EndBehaviour(Animation animation)
         {
             switch (animation)
@@ -101,47 +102,117 @@ namespace SpriteWander.textures
                     return AnimEvent.End;
             }
         }
+
+        public static Animation ToId(string name)
+        {
+            return name.ToLower() switch
+            {
+                "walk" => Animation.Walk,
+                "attack" => Animation.Attack,
+                "attack1" => Animation.Attack1,
+                "attack2" => Animation.Attack2,
+                "attack3" => Animation.Attack3,
+                "sleep" => Animation.Sleep,
+                "hurt" => Animation.Hurt,
+                "idle" => Animation.Idle,
+                "swing" => Animation.Swing,
+                "double" => Animation.Double,
+                "hop" => Animation.Hop,
+                "charge" => Animation.Charge,
+                "rotate" => Animation.Rotate,
+                "eventsleep" => Animation.Eventsleep,
+                "wake" => Animation.Wake,
+                "eat" => Animation.Eat,
+                "tumble" => Animation.Tumble,
+                "pose" => Animation.Pose,
+                "pull" => Animation.Pull,
+                "pain" => Animation.Pain,
+                "float" => Animation.Float,
+                "deepbreath" => Animation.DeepBreath,
+                "nod" => Animation.Nod,
+                "sit" => Animation.Sit,
+                "lookup" => Animation.LookUp,
+                "sink" => Animation.Sink,
+                "trip" => Animation.Trip,
+                "laying" => Animation.Laying,
+                "leapforth" => Animation.LeapForth,
+                "head" => Animation.Head,
+                "cringe" => Animation.Cringe,
+                "lostbalance" => Animation.LostBalance,
+                "tumbleback" => Animation.TumbleBack,
+                "faint" => Animation.Faint,
+                "hitground" => Animation.HitGround,
+                "standingup" => Animation.StandingUp,
+                "bump" => Animation.Bump,
+                _ => Animation.Default,
+            };
+        }
+
+        public int[] DirToVect(Direction dir)
+        {
+            switch (dir)
+            {
+                default:
+                case Direction.Down:
+                    return new int[] { 0, -1};
+                case Direction.DownRight:
+                    return new int[] { 1, -1 };
+                case Direction.Right:
+                    return new int[] { 1, 0 };
+                case Direction.UpRight:
+                    return new int[] { 1, 1 };
+                case Direction.Up:
+                    return new int[] { 0, 1 };
+                case Direction.UpLeft:
+                    return new int[] { -1, 1 };
+                case Direction.Left:
+                    return new int[] { -1, 0 };
+                case Direction.DownLeft:
+                    return new int[] { -1, -1 };
+            }
+        }
     }
 
     public enum Animation
     {
-        Walk = 0,
-        Attack = 1,
-        Attack1 = 2,
-        Attack2 = 3,
-        Attack3 = 4,
-        Sleep = 5,
-        Hurt = 6,
-        Idle = 7,
-        Swing = 8,
-        Double = 9,
-        Hop = 10,
-        Charge = 11,
-        Rotate = 12,
-        Eventsleep = 13,
-        Wake = 14,
-        Eat = 15,
-        Tumble = 16,
-        Pose = 17,
-        Pull = 18,
-        Pain = 19,
-        Float = 20,
-        DeepBreath = 21,
-        Nod = 22,
-        Sit = 23,
-        LookUp = 24,
-        Sink = 25,
-        Trip = 26,
-        Laying = 27,
-        LeapForth = 28,
-        Head = 29,
-        Cringe = 30,
-        LostBalance = 31,
-        TumbleBack = 32,
-        Faint = 33,
-        HitGround = 34,
-        Default = 35,
-        Bump = 36
+        Walk,
+        Attack,
+        Attack1,
+        Attack2,
+        Attack3,
+        Sleep,
+        Hurt,
+        Idle,
+        Swing,
+        Double,
+        Hop,
+        Charge,
+        Rotate,
+        Eventsleep,
+        Wake,
+        Eat,
+        Tumble,
+        Pose,
+        Pull,
+        Pain,
+        Float,
+        DeepBreath,
+        Nod,
+        Sit,
+        LookUp,
+        Sink,
+        Trip,
+        Laying,
+        LeapForth,
+        Head,
+        Cringe,
+        LostBalance,
+        TumbleBack,
+        Faint,
+        HitGround,
+        StandingUp,
+        Default,
+        Bump
     }
 
     public enum Direction

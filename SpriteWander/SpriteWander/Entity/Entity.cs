@@ -69,7 +69,7 @@ namespace SpriteWander.Entity
 
         private float[] GetCenter()
         {
-            return new float[] { (X - MIN_X) / (MAX_X - MIN_X), (Y - MIN_Y) / (MAX_Y - MIN_Y) };
+            return new float[] { ((float)X) / (Park.max_X), ((float)Y) / (Park.max_Y) };
         }
 
         public float[] GetPos()
@@ -79,20 +79,20 @@ namespace SpriteWander.Entity
             float cx = center[0];
             float cy = center[1];
             float[] vertices = {
-                    cx * 2f - 1f - draw.Width * Scale / Park.Width, //bas gauche
-                    cy * 2f - 1f - draw.Height * Scale / Park.Height,
+                    cx * 2f - 1f - Scale * draw.Width / (Park.max_X * 20), //bas gauche
+                    cy * 2f - 1f - Scale * draw.Height / (Park.max_Y * 20),
                     ((float)draw.X) / Width,
                     1-((float) draw.Y + draw.Height) / Height,
-                    cx * 2f - 1f + draw.Width * Scale / Park.Width, // bas droite
-                    cy * 2f - 1f - draw.Height * Scale / Park.Height,
+                    cx * 2f - 1f + Scale * draw.Width / (Park.max_X * 20), // bas droite
+                    cy * 2f - 1f - Scale * draw.Height / (Park.max_Y * 20),
                     ((float) draw.X + draw.Width) / Width,
                     1-((float) draw.Y + draw.Height) / Height,
-                    cx * 2f - 1f - draw.Width * Scale / Park.Width, // haut gauche
-                    cy * 2f - 1f + draw.Height * Scale / Park.Height,
+                    cx * 2f - 1f - Scale * draw.Width / (Park.max_X * 20), // haut gauche
+                    cy * 2f - 1f + Scale * draw.Height / (Park.max_Y * 20),
                     ((float) draw.X) / Width,
                     1-((float) draw.Y) / Height,
-                    cx * 2f - 1f + draw.Width * Scale / Park.Width, //hautdroite
-                    cy * 2f - 1f + draw.Height * Scale / Park.Height,
+                    cx * 2f - 1f + Scale * draw.Width / (Park.max_X * 20), //hautdroite
+                    cy * 2f - 1f + Scale * draw.Height / (Park.max_Y * 20),
                     ((float) draw.X +(float) draw.Width) / Width,
                     1-((float) draw.Y) / Height
                 };
@@ -166,10 +166,10 @@ namespace SpriteWander.Entity
             {
                 case AnimEvent.End:
                     NextAnim();
-                    turn();
+                    turn(0.7);
                     break;
                 case AnimEvent.Reset:
-                    turn();
+                    turn(0.3);
                     if (cycle == 0) NextAnim();
                     else
                     {
@@ -182,6 +182,26 @@ namespace SpriteWander.Entity
                 default: 
                     break;
             }
+            int length = Texture.Lentgh(state);
+            switch (state)
+            {
+                case textures.Animation.Walk:
+                case textures.Animation.LeapForth:
+                    move(1f / length);
+                    break;
+                case textures.Animation.TumbleBack:
+                    move(-1f / length);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        protected void move(float speed)
+        {
+            int[] vec = Texture.DirToVect(subState);
+            X += vec[0] * speed;
+            Y += vec[1] * speed;
         }
 
         protected void NextAnim()
@@ -248,15 +268,16 @@ namespace SpriteWander.Entity
             }
         }
 
-        protected void turn()
+        protected void turn(double p)
         {
+            p /= 0.7;
             double rngvalue = rng.NextDouble();
             int dir = (int)subState;
-            if (rngvalue < 0.2) dir++;
-            else if (rngvalue < 0.4) dir--;
-            else if (rngvalue < 0.5) dir += 2;
-            else if (rngvalue < 0.6) dir -= 2;
-            else if (rngvalue < 0.7) dir += 4;
+            if (rngvalue < 0.2 * p) dir++;
+            else if (rngvalue < 0.4 * p) dir--;
+            else if (rngvalue < 0.5 * p) dir += 2;
+            else if (rngvalue < 0.6 * p) dir -= 2;
+            else if (rngvalue < 0.7 * p) dir += 4;
             dir %= 8;
             subState = (Direction)dir;
         }

@@ -109,15 +109,18 @@ namespace SpriteWander.textures
             ZipArchive archive = ZipFile.OpenRead(path);
             foreach (Anim anim in Anims)
             {
-                ZipArchiveEntry? img = archive.GetEntry(anim.Name + "-Anim.png");
-                if (img != null)
+                if (ToId(anim.Name) != Animation.Default)
                 {
-                    Stream stream = img.Open();
-                    anim.Handle = GenerateHandle();
-                    LoadFile(stream, anim.Handle.Value, OpenTK.Graphics.OpenGL4.TextureUnit.Texture0, out int fullWidth, out int fullHeight);
-                    anim.fullHeight = fullHeight;
-                    anim.fullWidth = fullWidth;
-                    ActiveAnims.Add((Animation)anim.Index, anim);
+                    ZipArchiveEntry? img = archive.GetEntry(anim.Name + "-Anim.png");
+                    if (img != null)
+                    {
+                        Stream stream = img.Open();
+                        anim.Handle = GenerateHandle();
+                        LoadFile(stream, anim.Handle.Value, OpenTK.Graphics.OpenGL4.TextureUnit.Texture0, out int fullWidth, out int fullHeight);
+                        anim.fullHeight = fullHeight;
+                        anim.fullWidth = fullWidth;
+                        ActiveAnims.Add(ToId(anim.Name), anim);
+                    }
                 }
             }
             ready = true;
@@ -134,6 +137,14 @@ namespace SpriteWander.textures
                 }
             }
             ready = false;
+        }
+
+        public override int Lentgh(Animation animation)
+        {
+            Animation fixAnim = Normalise(animation, out _);
+            if (ActiveAnims.TryGetValue(fixAnim, out var anim))
+                return anim.Length();
+            else return 0;
         }
     }
 
@@ -179,6 +190,11 @@ namespace SpriteWander.textures
                               $"  HitFrame : {this.HitFrame} \n" +
                               $"  ReturnFrame : {this.ReturnFrame} \n" +
                               $"  durations : {this.Durations} \n");
+        }
+
+        internal int Length()
+        {
+            return Durations.Sum();
         }
     }
 }
