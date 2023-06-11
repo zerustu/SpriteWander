@@ -7,9 +7,9 @@ namespace SpriteWander
 {
     public partial class DrawPark : Form
     {
-        public List<Entity.Entity> Entities;
-        readonly Dictionary<string, Texture> Textures;
+        public List<Entity.Entity> Entities = new List<Entity.Entity>();
         public Shader shader;
+        public int max_X, max_Y;
 
         int oldWindowLong;
 
@@ -126,8 +126,11 @@ namespace SpriteWander
 
         private System.Windows.Forms.Timer TickTimer = null!;
 
-        public DrawPark()
+        public DrawPark(int max_x, int max_y)
         {
+            max_X = max_x;
+            max_Y = max_y;
+
             InitializeComponent();
 
             //MaximizeEverything();
@@ -140,8 +143,6 @@ namespace SpriteWander
             Bounds = screen;
             gLControl.Location = screen.Location;
             gLControl.Size = screen.Size;
-            Entities = new List<Entity.Entity>();
-            Textures = new Dictionary<string, Texture>();
         }
 
         private void DrawPark_Load(object sender, EventArgs e)
@@ -202,17 +203,14 @@ namespace SpriteWander
         {
             Render();
         }
+
         public void AddEntity(string specie)
         {
-            if (!Program.AllEntities.TryGetValue(specie, out EntityInfo info)) Debug.WriteLine("can't find ifo for pokemon " + specie);
+            if (!Program.entries.TryGetValue(specie, out textures.Texture info)) Debug.WriteLine("can't find ifo for pokemon " + specie);
             else
             {
-                if (!Textures.TryGetValue(specie, out Texture texture))
-                {
-                    texture = new Texture(info.imagePath);
-                    Textures.Add(specie, texture);
-                }
-                //Entities.Add(new Entity.Entity(info, this, texture));
+                if (!info.ready) info.Load();
+                Entities.Add(new Entity.Entity(this, info));
             }
         }
 
@@ -243,7 +241,7 @@ namespace SpriteWander
             {
                 Entity.Dispose();
             }
-            foreach (Texture texture in Textures.Values)
+            foreach (textures.Texture texture in Program.entries.Values)
             {
                 texture.Dispose();
             }

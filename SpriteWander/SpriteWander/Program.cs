@@ -12,7 +12,7 @@ namespace SpriteWander
     static class Program
     {
 
-        public static Dictionary<string, EntityInfo>? AllEntities;
+        public static Dictionary<string, textures.Texture> entries = new Dictionary<string, textures.Texture>();
 
         public static DrawPark? Park;
 
@@ -29,7 +29,6 @@ namespace SpriteWander
             parser.ParseArguments<Options>(args).WithParsed<Options>(o =>
             {
                 _options = o;
-                List<textures.MultiTexture> entries = new List<textures.MultiTexture>();
                 string[] fichiersZip = Directory.GetFiles(_options.Folder, "*.zip");
                 foreach (string fichier in fichiersZip)
                 {
@@ -41,42 +40,17 @@ namespace SpriteWander
                         textures.MultiTexture? AnimsData = (textures.MultiTexture?)serializer.Deserialize(stream);
                         if (AnimsData != null)
                         {
-                            entries.Add(AnimsData);
+                            AnimsData.path = fichier;
+                            AnimsData.name = fichier.Substring(fichier.LastIndexOf('/') + 1, fichier.Length - 5 - fichier.LastIndexOf('/'));
+                            entries.Add(AnimsData.name, AnimsData);
                         }
                     }
+                    archive.Dispose();
                 }
-                Console.WriteLine($"{entries.Count} entité lu");
-                foreach (textures.MultiTexture texture in entries)
-                {
-                    Console.WriteLine($"ShadowSize: {texture.ShadowSize}");
-
-                    foreach (Anim anim in texture.Anims)
-                    {
-                        Console.WriteLine($"Name: {anim.Name}");
-                        Console.WriteLine($"Index: {anim.Index}");
-                        Console.WriteLine($"FrameWidth: {anim.Width}");
-                        Console.WriteLine($"FrameHeight: {anim.Height}");
-                        Console.WriteLine($"RushFrame: {anim.RushFrame}");
-                        Console.WriteLine($"HitFrame: {anim.HitFrame}");
-                        Console.WriteLine($"ReturnFrame: {anim.ReturnFrame}");
-
-                        Console.WriteLine("Durations:");
-                        foreach (int duration in anim.Durations)
-                        {
-                            Console.WriteLine(duration);
-                        }
-
-                        Console.WriteLine();
-                    }
-
-                }
-                /*
-                    _options = o;
-                    AllEntities = JsonConvert.DeserializeObject<Dictionary<string, EntityInfo>>(File.ReadAllText(o.EList));
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
-                    Park = new DrawPark();
-                    Application.Run(Park); */
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Park = new DrawPark(30 , 30);
+                Application.Run(Park); 
             });
         }
     }
