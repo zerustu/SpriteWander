@@ -150,26 +150,17 @@ namespace SpriteWander.textures
 
         public int[] DirToVect(Direction dir)
         {
-            switch (dir)
+            return dir switch
             {
-                default:
-                case Direction.Down:
-                    return new int[] { 0, -1};
-                case Direction.DownRight:
-                    return new int[] { 1, -1 };
-                case Direction.Right:
-                    return new int[] { 1, 0 };
-                case Direction.UpRight:
-                    return new int[] { 1, 1 };
-                case Direction.Up:
-                    return new int[] { 0, 1 };
-                case Direction.UpLeft:
-                    return new int[] { -1, 1 };
-                case Direction.Left:
-                    return new int[] { -1, 0 };
-                case Direction.DownLeft:
-                    return new int[] { -1, -1 };
-            }
+                Direction.DownRight => new int[] { 1, -1 },
+                Direction.Right => new int[] { 1, 0 },
+                Direction.UpRight => new int[] { 1, 1 },
+                Direction.Up => new int[] { 0, 1 },
+                Direction.UpLeft => new int[] { -1, 1 },
+                Direction.Left => new int[] { -1, 0 },
+                Direction.DownLeft => new int[] { -1, -1 },
+                _ => new int[] { 0, -1 },
+            };
         }
     }
 
