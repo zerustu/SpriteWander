@@ -169,7 +169,7 @@ namespace SpriteWander.Entity
                     turn(0.7);
                     break;
                 case AnimEvent.Reset:
-                    turn(0.3);
+                    turn(0.1);
                     if (cycle == 0) NextAnim();
                     else
                     {
