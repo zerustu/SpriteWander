@@ -1,5 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using System.Drawing.Imaging;
+using System.IO;
+using System.IO.Compression;
 
 namespace SpriteWander.Entity
 {

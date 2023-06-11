@@ -11,7 +11,7 @@ namespace SpriteWander
 
         private void Controls_Load(object sender, EventArgs e)
         {
-            foreach (string Name in Program.AllEntities.Keys)
+            foreach (string Name in Program.entries.Keys)
             {
                 EntityList.Items.Add(Name);
             }
