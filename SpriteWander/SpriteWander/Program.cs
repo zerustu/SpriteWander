@@ -6,13 +6,14 @@ using System.IO.Compression;
 using System.Xml;
 using System.Xml.Serialization;
 using SpriteWander.textures;
+using System.Diagnostics;
 
 namespace SpriteWander
 {
     static class Program
     {
 
-        public static Dictionary<string, textures.Texture> entries = new Dictionary<string, textures.Texture>();
+        public static Dictionary<string, Texture> entries = new();
 
         public static DrawPark? Park;
 
@@ -25,8 +26,8 @@ namespace SpriteWander
         static void Main(string[] args)
         {
             var parser = new Parser(with => with.EnableDashDash = true); 
-            XmlSerializer serializer = new XmlSerializer(typeof(textures.MultiTexture));
-            parser.ParseArguments<Options>(args).WithParsed<Options>(o =>
+            XmlSerializer serializer = new(typeof(MultiTexture));
+            parser.ParseArguments<Options>(args).WithParsed(o =>
             {
                 _options = o;
                 string[] fichiersZip = Directory.GetFiles(_options.Folder, "*.zip");
@@ -37,7 +38,7 @@ namespace SpriteWander
                     if (animDataEntry != null)
                     {
                         Stream stream = animDataEntry.Open();
-                        textures.MultiTexture? AnimsData = (textures.MultiTexture?)serializer.Deserialize(stream);
+                        MultiTexture? AnimsData = (MultiTexture?)serializer.Deserialize(stream);
                         if (AnimsData != null)
                         {
                             AnimsData.path = fichier;
@@ -47,10 +48,17 @@ namespace SpriteWander
                     }
                     archive.Dispose();
                 }
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Park = new DrawPark(30 , 30);
-                Application.Run(Park); 
+                if (entries.Count == 0)
+                {
+                    MessageBox.Show("You need to import a sprite first!", "Warning", MessageBoxButtons.OK);
+                }
+                else
+                { 
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Park = new DrawPark(30 , 30);
+                    Application.Run(Park);
+                }
             });
         }
     }
