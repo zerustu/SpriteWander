@@ -130,7 +130,7 @@ namespace SpriteWander.Entity
         public Entity(DrawPark Park, textures.Texture texture, float scale = 1)
         {
             state = textures.Animation.Default;
-            subState = 0;
+            subState = (Direction)rng.Next(0, 8);
             this.Park = Park;
             this.scale = scale < 0 ? (float)(rng.NextDouble() + 2.5) : scale;
             X = (float)(rng.NextDouble() * (MAX_X - MIN_X) + MIN_X);
@@ -278,6 +278,7 @@ namespace SpriteWander.Entity
             else if (rngvalue < 0.5 * p) dir += 2;
             else if (rngvalue < 0.6 * p) dir -= 2;
             else if (rngvalue < 0.7 * p) dir += 4;
+            dir += 8;
             dir %= 8;
             subState = (Direction)dir;
         }

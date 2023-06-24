@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v7.0": {
-      "SpriteWander/1.0.0": {
+      "SpriteWander/2.0.0": {
         "dependencies": {
           "CommandLineParser": "2.9.1",
           "Newtonsoft.Json": "13.0.3",
@@ -55,7 +55,7 @@
     }
   },
   "libraries": {
-    "SpriteWander/1.0.0": {
+    "SpriteWander/2.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
