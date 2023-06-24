@@ -28,12 +28,12 @@ namespace SpriteWander.Entity
                 if (value < MIN_X)
                 {
                     x = MIN_X;
-                    state = textures.Animation.Bump;
+                    state = Animation.Bump;
                 }
                 else if (value > MAX_X)
                 {
                     x = MAX_X;
-                    state = textures.Animation.Bump;
+                    state = Animation.Bump;
                 }
                 else
                 {
@@ -53,12 +53,12 @@ namespace SpriteWander.Entity
                 if (value < MIN_Y)
                 {
                     y = MIN_Y;
-                    state = textures.Animation.Bump;
+                    state = Animation.Bump;
                 }
                 else if (value > MAX_Y)
                 {
                     y = MAX_Y;
-                    state = textures.Animation.Bump;
+                    state = Animation.Bump;
                 }
                 else
                 {
@@ -93,7 +93,7 @@ namespace SpriteWander.Entity
                     1-((float) draw.Y) / Height,
                     cx * 2f - 1f + Scale * draw.Width / (Park.max_X * 20), //hautdroite
                     cy * 2f - 1f + Scale * draw.Height / (Park.max_Y * 20),
-                    ((float) draw.X +(float) draw.Width) / Width,
+                    ((float) draw.X + draw.Width) / Width,
                     1-((float) draw.Y) / Height
                 };
             return vertices;
@@ -103,7 +103,7 @@ namespace SpriteWander.Entity
             0, 1, 2,   // first triangle
             1, 2, 3    // second triangle
         };
-        public readonly textures.Texture Texture;
+        public readonly Texture Texture;
         readonly int VertexBufferObject;
         readonly int VertexArrayObject;
         readonly int ElementBufferObject;
@@ -111,11 +111,11 @@ namespace SpriteWander.Entity
 
         //animations variable
         protected int animTimer = 0;
-        protected textures.AnimEvent Event = AnimEvent.Nothing;
+        protected AnimEvent Event = AnimEvent.Nothing;
 
 
         //Pokemon state
-        public SpriteWander.textures.Animation state = SpriteWander.textures.Animation.Default;
+        public Animation state = Animation.Default;
         public int cycle = 0;
         protected Direction subState = 0;
 
@@ -127,9 +127,9 @@ namespace SpriteWander.Entity
 
 
 
-        public Entity(DrawPark Park, textures.Texture texture, float scale = 1)
+        public Entity(DrawPark Park, Texture texture, float scale = 1)
         {
-            state = textures.Animation.Default;
+            state = Animation.Default;
             subState = (Direction)rng.Next(0, 8);
             this.Park = Park;
             this.scale = scale < 0 ? (float)(rng.NextDouble() + 2.5) : scale;
@@ -185,19 +185,19 @@ namespace SpriteWander.Entity
             int length = Texture.Lentgh(state);
             switch (state)
             {
-                case textures.Animation.Walk:
-                case textures.Animation.LeapForth:
-                    move(1f / length);
+                case Animation.Walk:
+                case Animation.LeapForth:
+                    Move(1f / length);
                     break;
-                case textures.Animation.TumbleBack:
-                    move(-1f / length);
+                case Animation.TumbleBack:
+                    Move(-1f / length);
                     break;
                 default:
                     break;
             }
         }
 
-        protected void move(float speed)
+        protected void Move(float speed)
         {
             int[] vec = Texture.DirToVect(subState);
             X += vec[0] * speed;
@@ -210,55 +210,55 @@ namespace SpriteWander.Entity
             double rngvalue = rng.NextDouble();
             switch (state)
             {
-                case textures.Animation.Sleep:
-                case textures.Animation.Eventsleep:
-                case textures.Animation.Laying:
-                    state = textures.Animation.Wake;
+                case Animation.Sleep:
+                case Animation.Eventsleep:
+                case Animation.Laying:
+                    state = Animation.Wake;
                     break;
                 default:
-                case textures.Animation.Default:
-                case textures.Animation.Idle:
-                    if (rngvalue < 0.5) state = textures.Animation.Walk;
-                    else if (rngvalue < 0.55) state = textures.Animation.LeapForth;
-                    else if (rngvalue < 0.90) state = textures.Animation.Sleep;
-                    else if (rngvalue < 0.95) state = textures.Animation.Pose;
-                    else state = textures.Animation.Eat;
+                case Animation.Default:
+                case Animation.Idle:
+                    if (rngvalue < 0.5) state = Animation.Walk;
+                    else if (rngvalue < 0.55) state = Animation.LeapForth;
+                    else if (rngvalue < 0.90) state = Animation.Sleep;
+                    else if (rngvalue < 0.95) state = Animation.Pose;
+                    else state = Animation.Eat;
                     break;
-                case textures.Animation.Trip:
-                case textures.Animation.LostBalance:
-                case textures.Animation.Faint:
-                case textures.Animation.HitGround:
-                    state = textures.Animation.Laying;
+                case Animation.Trip:
+                case Animation.LostBalance:
+                case Animation.Faint:
+                case Animation.HitGround:
+                    state = Animation.Laying;
                     break;
-                case textures.Animation.Walk:
-                case textures.Animation.Attack:
-                case textures.Animation.Attack1:
-                case textures.Animation.Attack2:
-                case textures.Animation.Attack3:
-                case textures.Animation.Double:
-                case textures.Animation.Hurt:
-                case textures.Animation.Bump:
-                case textures.Animation.Swing:
-                case textures.Animation.Hop:
-                case textures.Animation.Charge:
-                case textures.Animation.Rotate:
-                case textures.Animation.Eat:
-                case textures.Animation.Tumble:
-                case textures.Animation.TumbleBack:
-                case textures.Animation.Wake:
-                case textures.Animation.Pose:
-                case textures.Animation.Pull:
-                case textures.Animation.Pain:
-                case textures.Animation.Float:
-                case textures.Animation.DeepBreath:
-                case textures.Animation.Nod:
-                case textures.Animation.Sit:
-                case textures.Animation.LookUp:
-                case textures.Animation.Sink:
-                case textures.Animation.LeapForth:
-                case textures.Animation.Head:
-                case textures.Animation.Cringe:
-                    state = textures.Animation.Idle;
+                case Animation.Walk:
+                case Animation.Attack:
+                case Animation.Attack1:
+                case Animation.Attack2:
+                case Animation.Attack3:
+                case Animation.Double:
+                case Animation.Hurt:
+                case Animation.Bump:
+                case Animation.Swing:
+                case Animation.Hop:
+                case Animation.Charge:
+                case Animation.Rotate:
+                case Animation.Eat:
+                case Animation.Tumble:
+                case Animation.TumbleBack:
+                case Animation.Wake:
+                case Animation.Pose:
+                case Animation.Pull:
+                case Animation.Pain:
+                case Animation.Float:
+                case Animation.DeepBreath:
+                case Animation.Nod:
+                case Animation.Sit:
+                case Animation.LookUp:
+                case Animation.Sink:
+                case Animation.LeapForth:
+                case Animation.Head:
+                case Animation.Cringe:
+                    state = Animation.Idle;
                     break;
             }
             state = Texture.Normalise(state, out _);

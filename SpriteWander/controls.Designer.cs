@@ -37,22 +37,22 @@ namespace SpriteWander
             // AddButton
             // 
             AddButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            AddButton.Location = new Point(10, 376);
-            AddButton.Margin = new Padding(4, 3, 4, 3);
+            AddButton.Location = new Point(24, 1028);
+            AddButton.Margin = new Padding(10, 8, 10, 8);
             AddButton.Name = "AddButton";
-            AddButton.Size = new Size(142, 70);
+            AddButton.Size = new Size(345, 191);
             AddButton.TabIndex = 0;
-            AddButton.Text = "Add 1";
+            AddButton.Text = "Add Sprites";
             AddButton.UseVisualStyleBackColor = true;
             AddButton.Click += AddButton_Click;
             // 
             // CloseButton
             // 
             CloseButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            CloseButton.Location = new Point(160, 376);
-            CloseButton.Margin = new Padding(4, 3, 4, 3);
+            CloseButton.Location = new Point(389, 1028);
+            CloseButton.Margin = new Padding(10, 8, 10, 8);
             CloseButton.Name = "CloseButton";
-            CloseButton.Size = new Size(155, 70);
+            CloseButton.Size = new Size(376, 191);
             CloseButton.TabIndex = 1;
             CloseButton.Text = "Close app";
             CloseButton.UseVisualStyleBackColor = true;
@@ -62,23 +62,25 @@ namespace SpriteWander
             // 
             EntityList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             EntityList.FormattingEnabled = true;
-            EntityList.ItemHeight = 15;
-            EntityList.Location = new Point(10, 6);
-            EntityList.Margin = new Padding(4, 3, 4, 3);
+            EntityList.ItemHeight = 41;
+            EntityList.Location = new Point(24, 16);
+            EntityList.Margin = new Padding(10, 8, 10, 8);
             EntityList.Name = "EntityList";
-            EntityList.Size = new Size(305, 364);
+            EntityList.SelectionMode = SelectionMode.MultiExtended;
+            EntityList.Size = new Size(735, 988);
             EntityList.TabIndex = 2;
+            EntityList.SelectedIndexChanged += EntityList_SelectedIndexChanged;
             // 
-            // controls
+            // Controls
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(328, 456);
+            ClientSize = new Size(797, 1246);
             Controls.Add(EntityList);
             Controls.Add(CloseButton);
             Controls.Add(AddButton);
-            Margin = new Padding(4, 3, 4, 3);
-            Name = "controls";
+            Margin = new Padding(10, 8, 10, 8);
+            Name = "Controls";
             Text = "controls";
             FormClosing += CloseMainApp;
             Load += Controls_Load;
@@ -87,8 +89,8 @@ namespace SpriteWander
 
         #endregion
 
-        private System.Windows.Forms.Button AddButton;
-        private System.Windows.Forms.Button CloseButton;
-        private System.Windows.Forms.ListBox EntityList;
+        private Button AddButton;
+        private Button CloseButton;
+        private ListBox EntityList;
     }
 }
