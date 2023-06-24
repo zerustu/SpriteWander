@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Diagnostics;
 
 namespace SpriteWander
 {
@@ -25,7 +26,7 @@ namespace SpriteWander
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            Program.Park.AddEntity(this.EntityList.SelectedItem.ToString());
+            Program.Park.AddEntity(EntityList.SelectedItem.ToString());
         }
 
         private void CloseMainApp(object sender, EventArgs e)
