@@ -10,41 +10,38 @@ SpriteWander is an application developed in C# that allows users to create an ov
 2. Open the project in your preferred C# development environment (e.g., Visual Studio, Visual Studio Code).
 3. Build the project to generate the executable file (e.g., `SpriteWander.exe`).
 
+Alternatively, an already built Windows executable can be found in the "executable" folder.
+
 ### Usage
 
 - Launch the application by double-clicking the executable file.
 
 You can also run the application with command-line options:
 
-```SpriteWander.exe [--tickFreq <ticks-per-second>] [--alpha <opacity>] [--list <entity-list-path>]```
+```SpriteWander.exe [--tickFreq <ticks-per-second>] [--alpha <opacity>] [--folder <entity-list-folder>] [--scale <int>]```
 
 - `--tickFreq` or `-t` (optional): Specifies the number of ticks per second for calculating entity positions and states (default: 50).
 - `--alpha` or `-a` (optional): Sets the opacity of the overlay (default: 0.6).
-- `--list` or `-l` (optional): Specifies the path to the JSON file containing the entity list to load (default: "./EntityList.json").
+- `--folder` or `-f` (optional): Specifies the path to the folder with all entities to load (default: `./`).
+- `--scale` or `-s` (optional): Specifies the approximate pixel size of an entity (default: 40).
 
-For the application to run, you need to have a valide Entity list json file, either at the same place as the execution file, or use the -l argument to point to one.
-you can check the branch 'PokemonPack' for a exemple of Entity List and entities files. copy the content of this branch in the same folder as your execution file.
+In the entity folder (`./` by default), place all the entities you want to be able to load.
 
-### Entity List JSON File
+The expected format is the one used by the PMD Sprite Collab project ([Home page](https://sprites.pmdcollab.org), [GitHub project](https://github.com/PMDCollab/SpriteCollab), [Discord](https://discord.com/invite/skytemple)). Drop a Pokémon sprite zip archive in the entity folder, rename it (as the name of the archive is used as the name of the entity), and they should be loaded by the program (restart required).
 
-The entity list JSON file contains a dictionary where the keys are the names of the entities, and the values contain three fields:
+The tool isn't restricted to Pokémon sprites, but this format is used for reading the files.
 
-- `animPath`: Path to a JSON file defining the entity's animations.
-- `imagePath`: Path to a PNG file containing all the sprites for the entity.
-- `scale`: A double value representing the scaling factor for the entity's size.
+## Known issues
 
-The animation JSON file consists of a dictionary with animation names as keys and a list of frames as values. Each frame is defined by five properties:
+When starting the app, the main screen will become white. Switching window focus (by pressing Alt + Tab or clicking anywhere on your screen) will fix this issue.
 
-- `length`: The duration of the frame in seconds.
-- `x` and `y`: The coordinates of the top-left corner of the area to be drawn from the image for this frame.
-- `width` and `height`: The width and height of the area to be drawn for this frame.
-
-For more details and examples, refer to the `PokemonPack` branch in this repository.
+If, at some point, the sprites are no longer on the topmost layer (go behind other windows), you can click on the taskbar and then back to the app, and it should fix the issue. This applies to Windows; I'm not sure about other operating systems.
 
 ## Contributing
 
 Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
 
+You can reuse this project, modify it as you want.
 
 ## License
 
