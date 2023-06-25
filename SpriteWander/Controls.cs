@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-
-namespace SpriteWander
+﻿namespace SpriteWander
 {
     public partial class Controls : Form
     {
@@ -18,19 +16,24 @@ namespace SpriteWander
             EntityList.SelectedIndex = 0;
         }
 
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void CloseButton_Click(object sender, EventArgs e) => Close();
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            Program.Park.AddEntity(this.EntityList.SelectedItem.ToString());
+            foreach (string selectedItem in EntityList.SelectedItems)
+            {
+                Program.Park?.AddEntity(selectedItem);
+            }
         }
 
         private void CloseMainApp(object sender, EventArgs e)
         {
-            Program.Park.Exit();
+            Program.Park?.Exit();
+        }
+
+        private void EntityList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
