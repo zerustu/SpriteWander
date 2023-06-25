@@ -1,7 +1,4 @@
-﻿using System.Configuration;
-using System.Diagnostics;
-
-namespace SpriteWander
+﻿namespace SpriteWander
 {
     public partial class Controls : Form
     {

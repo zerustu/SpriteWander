@@ -1,5 +1,4 @@
-﻿
-namespace SpriteWander
+﻿namespace SpriteWander
 {
     partial class Controls
     {

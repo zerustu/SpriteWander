@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK.Graphics.OpenGL4;
 using SpriteWander.textures;
 
 namespace SpriteWander.Entity
