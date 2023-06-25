@@ -1,12 +1,7 @@
-﻿using Newtonsoft.Json;
-using SpriteWander.Entity;
-using CommandLine;
-using System.IO;
+﻿using CommandLine;
 using System.IO.Compression;
-using System.Xml;
 using System.Xml.Serialization;
 using SpriteWander.textures;
-using System.Diagnostics;
 
 namespace SpriteWander
 {
