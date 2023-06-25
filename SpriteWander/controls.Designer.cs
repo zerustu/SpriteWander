@@ -1,5 +1,4 @@
-﻿
-namespace SpriteWander
+﻿namespace SpriteWander
 {
     partial class Controls
     {
@@ -37,19 +36,19 @@ namespace SpriteWander
             // AddButton
             // 
             AddButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            AddButton.Location = new Point(10, 376);
+            AddButton.Location = new Point(13, 316);
             AddButton.Margin = new Padding(4, 3, 4, 3);
             AddButton.Name = "AddButton";
             AddButton.Size = new Size(142, 70);
             AddButton.TabIndex = 0;
-            AddButton.Text = "Add 1";
+            AddButton.Text = "Add Sprites";
             AddButton.UseVisualStyleBackColor = true;
             AddButton.Click += AddButton_Click;
             // 
             // CloseButton
             // 
             CloseButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            CloseButton.Location = new Point(160, 376);
+            CloseButton.Location = new Point(160, 316);
             CloseButton.Margin = new Padding(4, 3, 4, 3);
             CloseButton.Name = "CloseButton";
             CloseButton.Size = new Size(155, 70);
@@ -66,19 +65,21 @@ namespace SpriteWander
             EntityList.Location = new Point(10, 6);
             EntityList.Margin = new Padding(4, 3, 4, 3);
             EntityList.Name = "EntityList";
-            EntityList.Size = new Size(305, 364);
+            EntityList.SelectionMode = SelectionMode.MultiExtended;
+            EntityList.Size = new Size(305, 304);
             EntityList.TabIndex = 2;
+            EntityList.SelectedIndexChanged += EntityList_SelectedIndexChanged;
             // 
-            // controls
+            // Controls
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(328, 456);
+            ClientSize = new Size(328, 388);
             Controls.Add(EntityList);
             Controls.Add(CloseButton);
             Controls.Add(AddButton);
             Margin = new Padding(4, 3, 4, 3);
-            Name = "controls";
+            Name = "Controls";
             Text = "controls";
             FormClosing += CloseMainApp;
             Load += Controls_Load;
@@ -87,8 +88,8 @@ namespace SpriteWander
 
         #endregion
 
-        private System.Windows.Forms.Button AddButton;
-        private System.Windows.Forms.Button CloseButton;
-        private System.Windows.Forms.ListBox EntityList;
+        private Button AddButton;
+        private Button CloseButton;
+        private ListBox EntityList;
     }
 }

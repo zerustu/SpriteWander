@@ -204,9 +204,9 @@ namespace SpriteWander
             Render();
         }
 
-        public void AddEntity(string specie)
+        public void AddEntity(string species)
         {
-            if (!Program.entries.TryGetValue(specie, out textures.Texture info)) Debug.WriteLine("can't find ifo for pokemon " + specie);
+            if (!Program.entries.TryGetValue(species, out textures.Texture info)) Debug.WriteLine("can't find info for pokemon " + species);
             else
             {
                 if (!info.ready) info.Load();
