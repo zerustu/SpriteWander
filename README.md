@@ -25,7 +25,7 @@ You can also run the application with command-line options:
 - `--folder` or `-f` (optional): Specifies the path to the folder with all entities to load (default: `./`).
 - `--scale` or `-s` (optional): Specifies the approximate pixel size of an entity (default: 40).
 
-In the entity folder (`./` by default), place all the entities you want to be able to load.
+In the entity folder (`./Sprites` by default), place all the entities you want to be able to load.
 
 The expected format is the one used by the PMD Sprite Collab project ([Home page](https://sprites.pmdcollab.org), [GitHub project](https://github.com/PMDCollab/SpriteCollab), [Discord](https://discord.com/invite/skytemple)). Drop a Pokémon sprite zip archive in the entity folder, rename it (as the name of the archive is used as the name of the entity), and they should be loaded by the program (restart required).
 
