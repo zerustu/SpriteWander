@@ -30,7 +30,6 @@ namespace SpriteWander
             parser.ParseArguments<Options>(args).WithParsed(o =>
             {
                 _options = o;
-                if (_options.Folder.Equals("./")) _options.Folder = "./Sprites/";
 
                 string[] fichiersZip = Directory.GetFiles(_options.Folder, "*.zip");
                 foreach (string fichier in fichiersZip)
