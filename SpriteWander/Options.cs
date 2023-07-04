@@ -4,7 +4,7 @@ namespace SpriteWander
 {
     class Options
     {
-        [Option('t', "tickFreq", Default = 60, HelpText = "The tick frequency in updates per second.")]
+        [Option('t', "tickFreq", Default = 1500, HelpText = "The tick frequency in updates per second.")]
         public int TickFrequency { get; set; }
 
         [Option('f', "folder", Default = "./Sprites/", HelpText = "path to the folder with the entities.")]

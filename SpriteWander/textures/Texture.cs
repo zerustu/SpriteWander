@@ -85,7 +85,7 @@ namespace SpriteWander.textures
         public abstract void Load();
         public abstract void Print();
         public abstract void Dispose();
-        public abstract int Lentgh(Animation animation);
+        public abstract int Length(Animation animation);
         public AnimEvent EndBehaviour(Animation animation)
         {
             switch (animation)
@@ -148,18 +148,18 @@ namespace SpriteWander.textures
             };
         }
 
-        public int[] DirToVect(Direction dir)
+        public (int, int) DirToVect(Direction dir)
         {
             return dir switch
             {
-                Direction.DownRight => new int[] { 1, -1 },
-                Direction.Right => new int[] { 1, 0 },
-                Direction.UpRight => new int[] { 1, 1 },
-                Direction.Up => new int[] { 0, 1 },
-                Direction.UpLeft => new int[] { -1, 1 },
-                Direction.Left => new int[] { -1, 0 },
-                Direction.DownLeft => new int[] { -1, -1 },
-                _ => new int[] { 0, -1 },
+                Direction.DownRight => ( 1, -1 ),
+                Direction.Right => ( 1, 0 ),
+                Direction.UpRight => ( 1, 1 ),
+                Direction.Up => ( 0, 1 ),
+                Direction.UpLeft => ( -1, 1 ),
+                Direction.Left => ( -1, 0 ),
+                Direction.DownLeft => ( -1, -1 ),
+                _ => ( 0, -1 ),
             };
         }
     }
