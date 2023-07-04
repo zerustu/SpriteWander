@@ -139,7 +139,7 @@ namespace SpriteWander.textures
             ready = false;
         }
 
-        public override int Lentgh(Animation animation)
+        public override int Length(Animation animation)
         {
             Animation fixAnim = Normalise(animation, out _);
             if (ActiveAnims.TryGetValue(fixAnim, out var anim))

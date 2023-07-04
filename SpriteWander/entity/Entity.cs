@@ -1,5 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using SpriteWander.textures;
+using System;
+using System.Diagnostics;
 
 namespace SpriteWander.Entity
 {
@@ -7,95 +9,63 @@ namespace SpriteWander.Entity
     {
         // Position limits
         private readonly DrawPark Park;
-        protected  float MIN_X { get =>  0.5f; }
-        protected float MAX_X { get => Park.max_X - 0.5f; }
-        protected float MIN_Y { get => 0.5f; }
-        protected float MAX_Y { get => Park.max_Y - 0.5f; }
+        static readonly float borderMargin = 0.5f;
+        protected float MIN_X = borderMargin;
+        protected float MAX_X { get => Park.max_X - borderMargin; }
+        protected float MIN_Y = borderMargin;
+        protected float MAX_Y { get => Park.max_Y - borderMargin; }
+        protected float RANDOM_X { get => (float) rng.NextDouble() * (MAX_X - MIN_X) + MIN_X; }
+        protected float RANDOM_Y { get => (float) rng.NextDouble() * (MAX_Y - MIN_Y) + MIN_Y; }
 
         //position
         protected float x = 20;
         protected float y = 20;
+        protected float targetX, targetY;
 
         public float X
         {
-            get
-            {
-                return x;
-            }
+            get => x;
             set
             {
-                if (value < MIN_X)
-                {
-                    x = MIN_X;
-                    state = Animation.Bump;
-                }
-                else if (value > MAX_X)
-                {
-                    x = MAX_X;
-                    state = Animation.Bump;
-                }
-                else
-                {
-                    x = value;
-                }
+                x = Math.Clamp(value, MIN_X, MAX_X);
+                if (x != value) state = Animation.Bump;
             }
         }
 
         public float Y
         {
-            get
-            {
-                return y;
-            }
+            get => y;
             set
             {
-                if (value < MIN_Y)
-                {
-                    y = MIN_Y;
-                    state = Animation.Bump;
-                }
-                else if (value > MAX_Y)
-                {
-                    y = MAX_Y;
-                    state = Animation.Bump;
-                }
-                else
-                {
-                    y = value;
-                }
+                y = Math.Clamp(value, MIN_Y, MAX_Y);
+                if (y != value) state = Animation.Bump;
             }
         }
 
-        private float[] GetCenter()
-        {
-            return new float[] { ((float)X) / (Park.max_X), ((float)Y) / (Park.max_Y) };
-        }
+        private (float, float) GetCenter() => (X / Park.max_X, Y / Park.max_Y);
 
         public float[] GetPos()
         {
             Rectangle draw = Texture.Getcoord(state, subState, animTimer, out int Width, out int Height, out Event);
-            float[] center = GetCenter();
-            float cx = center[0];
-            float cy = center[1];
-            float[] vertices = {
-                    cx * 2f - 1f - Scale * draw.Width / (Park.max_X * 20), //bas gauche
-                    cy * 2f - 1f - Scale * draw.Height / (Park.max_Y * 20),
-                    ((float)draw.X) / Width,
-                    1-((float) draw.Y + draw.Height) / Height,
-                    cx * 2f - 1f + Scale * draw.Width / (Park.max_X * 20), // bas droite
-                    cy * 2f - 1f - Scale * draw.Height / (Park.max_Y * 20),
-                    ((float) draw.X + draw.Width) / Width,
-                    1-((float) draw.Y + draw.Height) / Height,
-                    cx * 2f - 1f - Scale * draw.Width / (Park.max_X * 20), // haut gauche
-                    cy * 2f - 1f + Scale * draw.Height / (Park.max_Y * 20),
-                    ((float) draw.X) / Width,
-                    1-((float) draw.Y) / Height,
-                    cx * 2f - 1f + Scale * draw.Width / (Park.max_X * 20), //hautdroite
-                    cy * 2f - 1f + Scale * draw.Height / (Park.max_Y * 20),
-                    ((float) draw.X + draw.Width) / Width,
-                    1-((float) draw.Y) / Height
-                };
-            return vertices;
+            (float cx, float cy) = GetCenter();
+            return new[] {
+                cx * 2f - 1f - Scale * draw.Width / (Park.max_X * 20), // bas gauche
+                cy * 2f - 1f - Scale * draw.Height / (Park.max_Y * 20),
+                (float)draw.X / Width,
+                1 - (float)(draw.Y + draw.Height) / Height,
+                cx * 2f - 1f + Scale * draw.Width / (Park.max_X * 20), // bas droite
+                cy * 2f - 1f - Scale * draw.Height / (Park.max_Y * 20),
+                (float)(draw.X + draw.Width) / Width,
+                1 - (float)(draw.Y + draw.Height) / Height,
+                cx * 2f - 1f - Scale * draw.Width / (Park.max_X * 20), // haut gauche
+                cy * 2f - 1f + Scale * draw.Height / (Park.max_Y * 20),
+                (float)draw.X / Width,
+                1 - (float)(draw.Y) / Height,
+                cx * 2f - 1f + Scale * draw.Width / (Park.max_X * 20), // haut droite
+                cy * 2f - 1f + Scale * draw.Height / (Park.max_Y * 20),
+                (float)(draw.X + draw.Width) / Width,
+                1 - (float)(draw.Y) / Height
+            };
         }
 
         private static readonly uint[] INDICES = {  // note that we start from 0!
@@ -124,16 +94,14 @@ namespace SpriteWander.Entity
 
         protected static readonly Random rng = new();
 
-
-
         public Entity(DrawPark Park, Texture texture, float scale = 1)
         {
             state = Animation.Default;
             subState = (Direction)rng.Next(0, 8);
             this.Park = Park;
             this.scale = scale < 0 ? (float)(rng.NextDouble() + 2.5) : scale;
-            X = (float)(rng.NextDouble() * (MAX_X - MIN_X) + MIN_X);
-            Y = (float)(rng.NextDouble() * (MAX_Y - MIN_Y) + MIN_Y);
+            X = RANDOM_X;
+            Y = RANDOM_Y;
             Texture = texture;
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
@@ -165,10 +133,10 @@ namespace SpriteWander.Entity
             {
                 case AnimEvent.End:
                     NextAnim();
-                    turn(0.7);
+                    TurnRandom(0.7);
                     break;
                 case AnimEvent.Reset:
-                    turn(0.1);
+                    TurnRandom(0.1);
                     if (cycle == 0) NextAnim();
                     else
                     {
@@ -176,16 +144,25 @@ namespace SpriteWander.Entity
                         animTimer = 0;
                         cycle--;
                     }
+                    if (state == Animation.Walk) // Calculate direction to position before moving
+                    {
+                        double angle = Math.Atan2(targetY - Y, targetX - X) * (4.0 / Math.PI) + 2.25;
+                        subState = (Direction)((Math.Round(angle + 8) % 8));
+                    }
                     break;
                 case AnimEvent.Nothing:
                 default: 
                     break;
             }
-            int length = Texture.Lentgh(state);
+            int length = Texture.Length(state);
             switch (state)
             {
                 case Animation.Walk:
                 case Animation.LeapForth:
+                    if (Math.Sqrt(Math.Pow(targetX - X, 2) + Math.Pow(targetY - Y, 2)) < 1) // Made it to position (or nearly)?
+                    {
+                        cycle = 0;
+                    }
                     Move(1f / length);
                     break;
                 case Animation.TumbleBack:
@@ -198,9 +175,9 @@ namespace SpriteWander.Entity
 
         protected void Move(float speed)
         {
-            int[] vec = Texture.DirToVect(subState);
-            X += vec[0] * speed;
-            Y += vec[1] * speed;
+            (int vecX, int vecY) = Texture.DirToVect(subState);
+            X += vecX * speed;
+            Y += vecY * speed;
         }
 
         protected void NextAnim()
@@ -217,7 +194,12 @@ namespace SpriteWander.Entity
                 default:
                 case Animation.Default:
                 case Animation.Idle:
-                    if (rngvalue < 0.5) state = Animation.Walk;
+                    if (rngvalue < 0.5) // Set new target position to locate
+                    {
+                        state = Animation.Walk;
+                        targetX = RANDOM_X;
+                        targetY = RANDOM_Y;
+                    }
                     else if (rngvalue < 0.55) state = Animation.LeapForth;
                     else if (rngvalue < 0.90) state = Animation.Sleep;
                     else if (rngvalue < 0.95) state = Animation.Pose;
@@ -263,11 +245,12 @@ namespace SpriteWander.Entity
             state = Texture.Normalise(state, out _);
             if (Texture.EndBehaviour(state) == AnimEvent.Reset)
             {
-                cycle = rng.Next(5, 20);
+                int maxCycle = 20;
+                cycle = state == Animation.Walk ? 100 : rng.Next(4, maxCycle);
             }
         }
 
-        protected void turn(double p)
+        protected void TurnRandom(double p)
         {
             p /= 0.7;
             double rngvalue = rng.NextDouble();
@@ -277,8 +260,7 @@ namespace SpriteWander.Entity
             else if (rngvalue < 0.5 * p) dir += 2;
             else if (rngvalue < 0.6 * p) dir -= 2;
             else if (rngvalue < 0.7 * p) dir += 4;
-            dir += 8;
-            dir %= 8;
+            dir = (dir + 8) % 8;
             subState = (Direction)dir;
         }
 
