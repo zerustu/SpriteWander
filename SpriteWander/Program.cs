@@ -10,9 +10,9 @@ namespace SpriteWander
 
         public static Dictionary<string, Texture> entries = new();
 
-        public static DrawPark? Park;
+        public static DrawPark Park = null!;
 
-        public static Options? _options;
+        public static Options _options = null!;
 
         /// <summary>
         /// The main entry point for the application.
@@ -21,41 +21,44 @@ namespace SpriteWander
         static void Main(string[] args)
         {
             var parser = new Parser(with => with.EnableDashDash = true); 
-            XmlSerializer serializer = new(typeof(MultiTexture));
-            parser.ParseArguments<Options>(args).WithParsed(o =>
-            {
-                _options = o;
+            parser.ParseArguments<Options>(args).WithParsed(StartWithParsedArgs);
 
-                string[] fichiersZip = Directory.GetFiles(_options.Folder, "*.zip");
-                foreach (string fichier in fichiersZip)
+            if (entries.Count == 0)
+            {
+                MessageBox.Show("You need to import a sprite first!", "Warning", MessageBoxButtons.OK);
+                Application.Exit();
+            }
+            else
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Park = new DrawPark(_options.Scale, _options.Scale);
+                Application.Run(Park);
+            }
+        }
+        static void StartWithParsedArgs(Options o)
+        {
+            _options = o;
+            XmlSerializer serializer = new(typeof(MultiTexture));
+
+            string[] fichiersZip = Directory.GetFiles(_options.Folder, "*.zip");
+            foreach (string fichier in fichiersZip)
+            {
+                ZipArchive archive = ZipFile.OpenRead(fichier);
+                ZipArchiveEntry? animDataEntry = archive.GetEntry("AnimData.xml");
+                if (animDataEntry != null)
                 {
-                    ZipArchive archive = ZipFile.OpenRead(fichier);
-                    ZipArchiveEntry? animDataEntry = archive.GetEntry("AnimData.xml");
-                    if (animDataEntry != null)
+                    Stream stream = animDataEntry.Open();
+                    MultiTexture? AnimsData = (MultiTexture?)serializer.Deserialize(stream);
+                    if (AnimsData != null)
                     {
-                        Stream stream = animDataEntry.Open();
-                        MultiTexture? AnimsData = (MultiTexture?)serializer.Deserialize(stream);
-                        if (AnimsData != null)
-                        {
-                            AnimsData.path = fichier;
-                            AnimsData.name = Path.GetFileNameWithoutExtension(fichier);
-                            entries.Add(AnimsData.name, AnimsData);
-                        }
+                        AnimsData.path = fichier;
+                        AnimsData.name = Path.GetFileNameWithoutExtension(fichier);
+                        entries.Add(AnimsData.name, AnimsData);
                     }
-                    archive.Dispose();
                 }
-                if (entries.Count == 0)
-                {
-                    MessageBox.Show("You need to import a sprite first!", "Warning", MessageBoxButtons.OK);
-                }
-                else
-                { 
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
-                    Park = new DrawPark(30 , 30);
-                    Application.Run(Park);
-                }
-            });
+                archive.Dispose();
+            }
         }
     }
 }

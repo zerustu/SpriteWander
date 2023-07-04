@@ -1,7 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using SpriteWander.Entity;
 
 namespace SpriteWander
 {
@@ -126,11 +125,12 @@ namespace SpriteWander
 
         private System.Windows.Forms.Timer TickTimer = null!;
 
-        public DrawPark(int max_x, int max_y)
+        public DrawPark(int max_X, int max_Y)
         {
+            if (Screen.PrimaryScreen == null) return;
             Rectangle screen = Screen.PrimaryScreen.Bounds;
-            max_X = screen.Width / Program._options.Scale - 1;
-            max_Y = screen.Height / Program._options.Scale - 1;
+            this.max_X = screen.Width / max_X - 1;
+            this.max_Y = screen.Height / max_Y - 1;
 
             InitializeComponent();
 
