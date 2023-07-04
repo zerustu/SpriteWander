@@ -194,7 +194,7 @@ namespace SpriteWander
             gLControl.MakeCurrent();
 
             if (gLControl.ClientSize.Height == 0)
-                gLControl.ClientSize = new System.Drawing.Size(gLControl.ClientSize.Width, 1);
+                gLControl.ClientSize = new Size(gLControl.ClientSize.Width, 1);
 
             GL.Viewport(0, 0, gLControl.ClientSize.Width, gLControl.ClientSize.Height);
         }

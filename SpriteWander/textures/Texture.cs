@@ -86,82 +86,71 @@ namespace SpriteWander.textures
         public abstract void Print();
         public abstract void Dispose();
         public abstract int Length(Animation animation);
-        public AnimEvent EndBehaviour(Animation animation)
+        public AnimEvent EndBehaviour(Animation animation) => animation switch
         {
-            switch (animation)
-            {
-                case Animation.Walk:
-                case Animation.Idle:
-                case Animation.Sleep:
-                case Animation.Eventsleep:
-                case Animation.Eat:
-                case Animation.Float:
-                case Animation.Laying:
-                    return AnimEvent.Reset;
-                default:
-                    return AnimEvent.End;
-            }
-        }
+            Animation.Walk or
+            Animation.Idle or
+            Animation.Sleep or
+            Animation.Eventsleep or
+            Animation.Eat or
+            Animation.Float or
+            Animation.Laying => AnimEvent.Reset,
+            _ => AnimEvent.End,
+        };
 
-        public static Animation ToId(string name)
+        public static Animation ToId(string name) => name.ToLower() switch
         {
-            return name.ToLower() switch
-            {
-                "walk" => Animation.Walk,
-                "attack" => Animation.Attack,
-                "attack1" => Animation.Attack1,
-                "attack2" => Animation.Attack2,
-                "attack3" => Animation.Attack3,
-                "sleep" => Animation.Sleep,
-                "hurt" => Animation.Hurt,
-                "idle" => Animation.Idle,
-                "swing" => Animation.Swing,
-                "double" => Animation.Double,
-                "hop" => Animation.Hop,
-                "charge" => Animation.Charge,
-                "rotate" => Animation.Rotate,
-                "eventsleep" => Animation.Eventsleep,
-                "wake" => Animation.Wake,
-                "eat" => Animation.Eat,
-                "tumble" => Animation.Tumble,
-                "pose" => Animation.Pose,
-                "pull" => Animation.Pull,
-                "pain" => Animation.Pain,
-                "float" => Animation.Float,
-                "deepbreath" => Animation.DeepBreath,
-                "nod" => Animation.Nod,
-                "sit" => Animation.Sit,
-                "lookup" => Animation.LookUp,
-                "sink" => Animation.Sink,
-                "trip" => Animation.Trip,
-                "laying" => Animation.Laying,
-                "leapforth" => Animation.LeapForth,
-                "head" => Animation.Head,
-                "cringe" => Animation.Cringe,
-                "lostbalance" => Animation.LostBalance,
-                "tumbleback" => Animation.TumbleBack,
-                "faint" => Animation.Faint,
-                "hitground" => Animation.HitGround,
-                "standingup" => Animation.StandingUp,
-                "bump" => Animation.Bump,
-                _ => Animation.Default,
-            };
-        }
+            "walk" => Animation.Walk,
+            "attack" => Animation.Attack,
+            "attack1" => Animation.Attack1,
+            "attack2" => Animation.Attack2,
+            "attack3" => Animation.Attack3,
+            "sleep" => Animation.Sleep,
+            "hurt" => Animation.Hurt,
+            "idle" => Animation.Idle,
+            "swing" => Animation.Swing,
+            "double" => Animation.Double,
+            "hop" => Animation.Hop,
+            "charge" => Animation.Charge,
+            "rotate" => Animation.Rotate,
+            "eventsleep" => Animation.Eventsleep,
+            "wake" => Animation.Wake,
+            "eat" => Animation.Eat,
+            "tumble" => Animation.Tumble,
+            "pose" => Animation.Pose,
+            "pull" => Animation.Pull,
+            "pain" => Animation.Pain,
+            "float" => Animation.Float,
+            "deepbreath" => Animation.DeepBreath,
+            "nod" => Animation.Nod,
+            "sit" => Animation.Sit,
+            "lookup" => Animation.LookUp,
+            "sink" => Animation.Sink,
+            "trip" => Animation.Trip,
+            "laying" => Animation.Laying,
+            "leapforth" => Animation.LeapForth,
+            "head" => Animation.Head,
+            "cringe" => Animation.Cringe,
+            "lostbalance" => Animation.LostBalance,
+            "tumbleback" => Animation.TumbleBack,
+            "faint" => Animation.Faint,
+            "hitground" => Animation.HitGround,
+            "standingup" => Animation.StandingUp,
+            "bump" => Animation.Bump,
+            _ => Animation.Default,
+        };
 
-        public (int, int) DirToVect(Direction dir)
+        public (int, int) DirToVect(Direction dir) => dir switch
         {
-            return dir switch
-            {
-                Direction.DownRight => ( 1, -1 ),
-                Direction.Right => ( 1, 0 ),
-                Direction.UpRight => ( 1, 1 ),
-                Direction.Up => ( 0, 1 ),
-                Direction.UpLeft => ( -1, 1 ),
-                Direction.Left => ( -1, 0 ),
-                Direction.DownLeft => ( -1, -1 ),
-                _ => ( 0, -1 ),
-            };
-        }
+            Direction.DownRight => ( 1, -1 ),
+            Direction.Right => ( 1, 0 ),
+            Direction.UpRight => ( 1, 1 ),
+            Direction.Up => ( 0, 1 ),
+            Direction.UpLeft => ( -1, 1 ),
+            Direction.Left => ( -1, 0 ),
+            Direction.DownLeft => ( -1, -1 ),
+            _ => ( 0, -1 ),
+        };
     }
 
     public enum Animation
