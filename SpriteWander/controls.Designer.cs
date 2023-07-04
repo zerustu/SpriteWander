@@ -36,10 +36,10 @@
             // AddButton
             // 
             AddButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            AddButton.Location = new Point(13, 316);
-            AddButton.Margin = new Padding(4, 3, 4, 3);
+            AddButton.Location = new Point(20, 875);
+            AddButton.Margin = new Padding(11, 8, 11, 8);
             AddButton.Name = "AddButton";
-            AddButton.Size = new Size(142, 70);
+            AddButton.Size = new Size(344, 191);
             AddButton.TabIndex = 0;
             AddButton.Text = "Add Sprites";
             AddButton.UseVisualStyleBackColor = true;
@@ -48,10 +48,10 @@
             // CloseButton
             // 
             CloseButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            CloseButton.Location = new Point(160, 316);
-            CloseButton.Margin = new Padding(4, 3, 4, 3);
+            CloseButton.Location = new Point(401, 875);
+            CloseButton.Margin = new Padding(11, 8, 11, 8);
             CloseButton.Name = "CloseButton";
-            CloseButton.Size = new Size(155, 70);
+            CloseButton.Size = new Size(376, 191);
             CloseButton.TabIndex = 1;
             CloseButton.Text = "Close app";
             CloseButton.UseVisualStyleBackColor = true;
@@ -61,24 +61,24 @@
             // 
             EntityList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             EntityList.FormattingEnabled = true;
-            EntityList.ItemHeight = 15;
-            EntityList.Location = new Point(10, 6);
-            EntityList.Margin = new Padding(4, 3, 4, 3);
+            EntityList.ItemHeight = 41;
+            EntityList.Location = new Point(23, 16);
+            EntityList.Margin = new Padding(11, 8, 11, 8);
             EntityList.Name = "EntityList";
             EntityList.SelectionMode = SelectionMode.MultiExtended;
-            EntityList.Size = new Size(305, 304);
+            EntityList.Size = new Size(735, 824);
             EntityList.TabIndex = 2;
             EntityList.SelectedIndexChanged += EntityList_SelectedIndexChanged;
             // 
             // Controls
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(328, 388);
+            ClientSize = new Size(797, 1083);
             Controls.Add(EntityList);
             Controls.Add(CloseButton);
             Controls.Add(AddButton);
-            Margin = new Padding(4, 3, 4, 3);
+            Margin = new Padding(11, 8, 11, 8);
             Name = "Controls";
             Text = "controls";
             FormClosing += CloseMainApp;
