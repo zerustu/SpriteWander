@@ -2,6 +2,7 @@
 using System.IO.Compression;
 using System.Xml.Serialization;
 using SpriteWander.textures;
+using System.Diagnostics;
 
 namespace SpriteWander
 {

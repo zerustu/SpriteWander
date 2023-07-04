@@ -1,5 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using SpriteWander.textures;
+using System;
+using System.Diagnostics;
 
 namespace SpriteWander.Entity
 {
@@ -12,12 +14,13 @@ namespace SpriteWander.Entity
         protected float MAX_X { get => Park.max_X - borderMargin; }
         protected float MIN_Y = borderMargin;
         protected float MAX_Y { get => Park.max_Y - borderMargin; }
+        protected float RANDOM_X { get => (float) rng.NextDouble() * (MAX_X - MIN_X) + MIN_X; }
+        protected float RANDOM_Y { get => (float) rng.NextDouble() * (MAX_Y - MIN_Y) + MIN_Y; }
 
         //position
         protected float x = 20;
         protected float y = 20;
-
-        float targetX, targetY;
+        protected float targetX, targetY;
 
         public float X
         {
@@ -97,8 +100,8 @@ namespace SpriteWander.Entity
             subState = (Direction)rng.Next(0, 8);
             this.Park = Park;
             this.scale = scale < 0 ? (float)(rng.NextDouble() + 2.5) : scale;
-            X = (float)(rng.NextDouble() * (MAX_X - MIN_X) + MIN_X);
-            Y = (float)(rng.NextDouble() * (MAX_Y - MIN_Y) + MIN_Y);
+            X = RANDOM_X;
+            Y = RANDOM_Y;
             Texture = texture;
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
@@ -130,16 +133,21 @@ namespace SpriteWander.Entity
             {
                 case AnimEvent.End:
                     NextAnim();
-                    turn(0.7);
+                    TurnRandom(0.7);
                     break;
                 case AnimEvent.Reset:
-                    turn(0.1);
+                    TurnRandom(0.1);
                     if (cycle == 0) NextAnim();
                     else
                     {
                         Event = AnimEvent.Nothing;
                         animTimer = 0;
                         cycle--;
+                    }
+                    if (state == Animation.Walk) // Calculate direction to position before moving
+                    {
+                        double angle = Math.Atan2(targetY - Y, targetX - X) * (4.0 / Math.PI) + 2.25;
+                        subState = (Direction)((Math.Round(angle + 7) % 7));
                     }
                     break;
                 case AnimEvent.Nothing:
@@ -151,6 +159,10 @@ namespace SpriteWander.Entity
             {
                 case Animation.Walk:
                 case Animation.LeapForth:
+                    if (Math.Sqrt(Math.Pow(targetX - X, 2) + Math.Pow(targetY - Y, 2)) < 1) // Made it to position (or nearly)?
+                    {
+                        cycle = 0;
+                    }
                     Move(1f / length);
                     break;
                 case Animation.TumbleBack:
@@ -182,7 +194,12 @@ namespace SpriteWander.Entity
                 default:
                 case Animation.Default:
                 case Animation.Idle:
-                    if (rngvalue < 0.5) state = Animation.Walk;
+                    if (rngvalue < 0.5) // Set new target position to locate
+                    {
+                        state = Animation.Walk;
+                        targetX = RANDOM_X;
+                        targetY = RANDOM_Y;
+                    }
                     else if (rngvalue < 0.55) state = Animation.LeapForth;
                     else if (rngvalue < 0.90) state = Animation.Sleep;
                     else if (rngvalue < 0.95) state = Animation.Pose;
@@ -228,11 +245,12 @@ namespace SpriteWander.Entity
             state = Texture.Normalise(state, out _);
             if (Texture.EndBehaviour(state) == AnimEvent.Reset)
             {
-                cycle = rng.Next(5, 20);
+                int maxCycle = state == Animation.Walk ? 30 : 20;
+                cycle = rng.Next(4, maxCycle);
             }
         }
 
-        protected void turn(double p)
+        protected void TurnRandom(double p)
         {
             p /= 0.7;
             double rngvalue = rng.NextDouble();
