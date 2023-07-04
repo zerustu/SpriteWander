@@ -20,6 +20,23 @@ namespace SpriteWander.Entity
         //position
         protected float x = 20;
         protected float y = 20;
+
+        protected float WalkSTD { get => (MAX_X - MIN_X) / 4; } // this is totally arbitrary, i don't really know what value to put.
+                                                                // it represent the distance the will travel approximatly. (here a quarter of the screen)
+        protected (float, float) RANDOM_NORMAL_VECTOR
+        {
+            get {
+                float X, X1, Y, Y1;
+                do
+                {
+                    double R = Math.Sqrt(-2 * Math.Log(rng.NextDouble())) * WalkSTD;
+                    double T = 2 * Math.PI * rng.NextDouble();
+                    (X, Y) = ((float)(R * Math.Cos(T)) + x, (float)(R * Math.Sin(T)) + y);
+                    (X1, Y1) = (Math.Clamp(X, MIN_X, MAX_X), Math.Clamp(Y, MIN_Y, MAX_Y));
+                } while (X != X1 || Y != Y1);
+                return (X, Y);
+            }
+        }
         protected float targetX, targetY;
 
         public float X
@@ -197,8 +214,7 @@ namespace SpriteWander.Entity
                     if (rngvalue < 0.5) // Set new target position to locate
                     {
                         state = Animation.Walk;
-                        targetX = RANDOM_X;
-                        targetY = RANDOM_Y;
+                        (targetX, targetY) = RANDOM_NORMAL_VECTOR;
                     }
                     else if (rngvalue < 0.55) state = Animation.LeapForth;
                     else if (rngvalue < 0.90) state = Animation.Sleep;
