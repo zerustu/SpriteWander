@@ -1,0 +1,75 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "SpriteWander/2.2.0": {
+        "dependencies": {
+          "CommandLineParser": "2.9.1",
+          "OpenTK.GLControl": "3.3.3"
+        },
+        "runtime": {
+          "SpriteWander.dll": {}
+        }
+      },
+      "CommandLineParser/2.9.1": {
+        "runtime": {
+          "lib/netstandard2.0/CommandLine.dll": {
+            "assemblyVersion": "2.9.1.0",
+            "fileVersion": "2.9.1.0"
+          }
+        }
+      },
+      "OpenTK/3.3.3": {
+        "runtime": {
+          "lib/net20/OpenTK.dll": {
+            "assemblyVersion": "3.3.3.0",
+            "fileVersion": "3.3.3.0"
+          }
+        }
+      },
+      "OpenTK.GLControl/3.3.3": {
+        "dependencies": {
+          "OpenTK": "3.3.3"
+        },
+        "runtime": {
+          "lib/net20/OpenTK.GLControl.dll": {
+            "assemblyVersion": "3.3.3.0",
+            "fileVersion": "3.3.3.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SpriteWander/2.2.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CommandLineParser/2.9.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OE0sl1/sQ37bjVsPKKtwQlWDgqaxWgtme3xZz7JssWUzg5JpMIyHgCTY9MVMxOg48fJ1AgGT3tgdH5m/kQ5xhA==",
+      "path": "commandlineparser/2.9.1",
+      "hashPath": "commandlineparser.2.9.1.nupkg.sha512"
+    },
+    "OpenTK/3.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KtnygHEuYj4+agNsZRtzh5iSiKlelDZvDB/OhfebEvIDX/97Pzygv8n5llZHgrI7Xa29vvkucVBeN55R6/k+4w==",
+      "path": "opentk/3.3.3",
+      "hashPath": "opentk.3.3.3.nupkg.sha512"
+    },
+    "OpenTK.GLControl/3.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OJKQN4s7tCzdDUoLmrEEwAzywlhIu/vmLO+qhUG4FAUKwaxNqyGYbdLgzgH4RtNzP6Qs8ZDx0RxNHXyn/DPgUA==",
+      "path": "opentk.glcontrol/3.3.3",
+      "hashPath": "opentk.glcontrol.3.3.3.nupkg.sha512"
+    }
+  }
+}
