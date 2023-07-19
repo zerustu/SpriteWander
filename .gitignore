@@ -398,3 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 /executable/pokemons
 /executable/EntityList.json
+/executable/Sprites
