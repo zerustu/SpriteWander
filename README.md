@@ -35,9 +35,9 @@ The tool isn't restricted to Pokémon sprites, but this format is used for readi
 
 ## Known issues
 
-When starting the app, the main screen will become white. Switching window focus (by pressing Alt + Tab or clicking anywhere on your screen) will fix this issue.
+When minimilizing the Control form, if the next windows to get the focus should be the overlay, the control form wil be bring back. 
 
-If, at some point, the sprites are no longer on the topmost layer (go behind other windows), you can click on the taskbar and then back to the app, and it should fix the issue. This applies to Windows; I'm not sure about other operating systems.
+If, at some point, the sprites are no longer on the topmost layer (go behind other windows), you can click on the taskbar and then back to the app, and it should fix the issue.
 
 ## Contributing
 

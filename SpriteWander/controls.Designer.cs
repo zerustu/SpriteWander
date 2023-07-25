@@ -89,6 +89,7 @@
             // 
             AddButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             AddButton.Dock = DockStyle.Fill;
+            AddButton.FlatStyle = FlatStyle.System;
             AddButton.Location = new Point(3, 3);
             AddButton.Name = "AddButton";
             AddButton.Size = new Size(133, 38);
@@ -102,6 +103,7 @@
             CloseButton.AutoSize = true;
             CloseButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             CloseButton.Dock = DockStyle.Fill;
+            CloseButton.FlatStyle = FlatStyle.System;
             CloseButton.Location = new Point(142, 3);
             CloseButton.Name = "CloseButton";
             CloseButton.Size = new Size(133, 38);

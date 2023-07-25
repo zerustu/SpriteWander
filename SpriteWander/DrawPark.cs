@@ -9,6 +9,7 @@ namespace SpriteWander
         public List<Entity.Entity> Entities = new List<Entity.Entity>();
         public Shader shader;
         public int max_X, max_Y;
+        Controls ControlForm;
 
         int oldWindowLong;
 
@@ -147,8 +148,6 @@ namespace SpriteWander
 
         private void DrawPark_Load(object sender, EventArgs e)
         {
-            Controls ControlForm = new Controls();
-            ControlForm.Show();
         }
 
         private void GLControl_Load(object sender, EventArgs e)
@@ -231,6 +230,20 @@ namespace SpriteWander
             }
 
             gLControl.SwapBuffers();
+        }
+
+        private void DrawPark_GotFocus(object sender, EventArgs e)
+        {
+            if (ControlForm == null)
+            {
+                ControlForm = new Controls();
+                ControlForm.Show();
+            }
+            if (ControlForm.WindowState == FormWindowState.Minimized)
+            {
+                ControlForm.WindowState = FormWindowState.Normal;
+            }
+            ControlForm.Focus();
         }
 
         public void Exit()

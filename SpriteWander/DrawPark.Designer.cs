@@ -57,6 +57,7 @@
             TopMost = true;
             TransparencyKey = SystemColors.Control;
             Load += DrawPark_Load;
+            Activated += DrawPark_GotFocus;
             ResumeLayout(false);
             PerformLayout();
         }
