@@ -7,7 +7,7 @@
   "targets": {
     ".NETCoreApp,Version=v7.0": {},
     ".NETCoreApp,Version=v7.0/win-x86": {
-      "SpriteWander/2.2.0": {
+      "SpriteWander/2.4.0": {
         "dependencies": {
           "CommandLineParser": "2.9.1",
           "OpenTK.GLControl": "3.3.3"
@@ -46,7 +46,7 @@
     }
   },
   "libraries": {
-    "SpriteWander/2.2.0": {
+    "SpriteWander/2.4.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
