@@ -15,27 +15,33 @@ namespace SpriteWander
 
         public static Options _options = null!;
 
+        static void configuration(ParserSettings with) 
+        {
+            with.EnableDashDash = true;
+            with.HelpWriter = null;
+            with.AutoHelp = true;
+            with.IgnoreUnknownArguments = false;
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main(string[] args)
         {
-            var parser = new Parser(with => with.EnableDashDash = true); 
-            parser.ParseArguments<Options>(args).WithParsed(StartWithParsedArgs);
+            var parser = new Parser(configuration);
+            var result = parser.ParseArguments<Options>(args);
+            switch (result.Tag)
+            {
+                case ParserResultType.Parsed:
+                    StartWithParsedArgs(result.Value);
+                    break;
+                case ParserResultType.NotParsed:
+                    var HT = CommandLine.Text.HelpText.AutoBuild(result);
+                    MessageBox.Show(HT.ToString());
+                    break;
+            }
 
-            if (entries.Count == 0)
-            {
-                MessageBox.Show("You need to import a sprite first!", "Warning", MessageBoxButtons.OK);
-                Application.Exit();
-            }
-            else
-            {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Park = new DrawPark(_options.Scale, _options.Scale);
-                Application.Run(Park);
-            }
         }
         static void StartWithParsedArgs(Options o)
         {
@@ -59,6 +65,19 @@ namespace SpriteWander
                     }
                 }
                 archive.Dispose();
+            }
+
+            if (entries.Count == 0)
+            {
+                MessageBox.Show("You need to import a sprite first!", "Warning", MessageBoxButtons.OK);
+                Application.Exit();
+            }
+            else
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Park = new DrawPark(_options.Scale, _options.Scale, !_options.NotTopmost);
+                Application.Run(Park);
             }
         }
     }

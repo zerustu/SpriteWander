@@ -1,4 +1,5 @@
 ﻿using OpenTK.Graphics.OpenGL;
+using SpriteWander.entity;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -6,9 +7,10 @@ namespace SpriteWander
 {
     public partial class DrawPark : Form
     {
-        public List<Entity.Entity> Entities = new List<Entity.Entity>();
+        public QuadTree Entities;
         public Shader shader;
         public int max_X, max_Y;
+        public static float borderMargin = 0.5f;
         Controls ControlForm;
 
         int oldWindowLong;
@@ -126,13 +128,15 @@ namespace SpriteWander
 
         private System.Windows.Forms.Timer TickTimer = null!;
 
-        public DrawPark(int max_X, int max_Y)
+        public DrawPark(int max_X, int max_Y, bool Topmost)
         {
             if (Screen.PrimaryScreen == null) return;
             Rectangle screen = Screen.PrimaryScreen.Bounds;
             this.max_X = screen.Width / max_X - 1;
             this.max_Y = screen.Height / max_Y - 1;
+            Entities = new QuadLeaf(1, this.max_X, borderMargin, this.max_Y, borderMargin);
 
+            TopMost = Topmost;
             InitializeComponent();
 
             //MaximizeEverything();
@@ -159,10 +163,8 @@ namespace SpriteWander
             TickTimer = new System.Windows.Forms.Timer();
             TickTimer.Tick += (sender, e) =>
             {
-                foreach (Entity.Entity Entity in Entities)
-                {
-                    Entity.Tick(TickTimer.Interval / 200.0);
-                }
+                Entities.Run((e => e.Tick(TickTimer.Interval / 200.0)));
+                Entities = Entities.update();
                 Render();
             };
             TickTimer.Interval = (int)(1000f / Program._options.TickFrequency);   // 1000 ms per sec / 50 ms per frame = 20 FPS
@@ -185,7 +187,6 @@ namespace SpriteWander
             gLControl.Invalidate();
             int texture0 = GL.GetUniformLocation(shader.Handle, "texture0");
             GL.Uniform1(texture0, 0);
-            //ControlForm.Focus();
         }
 
         private void GLControl_Resize(object sender, EventArgs e)
@@ -209,7 +210,7 @@ namespace SpriteWander
             else
             {
                 if (!info.ready) info.Load();
-                Entities.Add(new Entity.Entity(this, info));
+                Entities = Entities.Add(new Entity.Entity(this, info));
             }
         }
 
@@ -221,8 +222,8 @@ namespace SpriteWander
             GL.Enable(EnableCap.DepthTest);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-
-            foreach (Entity.Entity pokemon in Entities)
+            List<Entity.Entity> Ents = Entities.GetAll().ToList();
+            foreach (Entity.Entity pokemon in Ents)
             {
                 shader.Use();
                 pokemon.Bind();
@@ -250,10 +251,7 @@ namespace SpriteWander
         {
             TickTimer.Stop();
             TickTimer.Dispose();
-            foreach (var Entity in Entities)
-            {
-                Entity.Dispose();
-            }
+            Entities.Run(e => e.Dispose());
             foreach (textures.Texture texture in Program.entries.Values)
             {
                 texture.Dispose();

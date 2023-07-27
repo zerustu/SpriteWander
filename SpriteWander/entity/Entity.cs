@@ -5,15 +5,15 @@ using System.Diagnostics;
 
 namespace SpriteWander.Entity
 {
-    public class Entity
+    public class Entity : IComparable<Entity>
     {
         // Position limits
         private readonly DrawPark Park;
-        static readonly float borderMargin = 0.5f;
-        protected float MIN_X = borderMargin;
-        protected float MAX_X { get => Park.max_X - borderMargin; }
-        protected float MIN_Y = borderMargin;
-        protected float MAX_Y { get => Park.max_Y - borderMargin; }
+        protected float MIN_X => DrawPark.borderMargin;
+
+        protected float MAX_X { get => Park.max_X - DrawPark.borderMargin; }
+        protected float MIN_Y => DrawPark.borderMargin;
+        protected float MAX_Y { get => Park.max_Y - DrawPark.borderMargin; }
         protected float RANDOM_X { get => (float) rng.NextDouble() * (MAX_X - MIN_X) + MIN_X; }
         protected float RANDOM_Y { get => (float) rng.NextDouble() * (MAX_Y - MIN_Y) + MIN_Y; }
 
@@ -216,7 +216,7 @@ namespace SpriteWander.Entity
                         state = Animation.Walk;
                         (targetX, targetY) = RANDOM_NORMAL_VECTOR;
                     }
-                    else if (rngvalue < 0.55) state = Animation.LeapForth;
+                    else if (rngvalue < 0/*.55*/) state = Animation.LeapForth;
                     else if (rngvalue < 0.90) state = Animation.Sleep;
                     else if (rngvalue < 0.95) state = Animation.Pose;
                     else state = Animation.Eat;
@@ -299,6 +299,14 @@ namespace SpriteWander.Entity
             GL.DeleteBuffer(VertexBufferObject);
             GL.DeleteBuffer(ElementBufferObject);
             GL.DeleteBuffer(VertexArrayObject);
+        }
+
+        public int CompareTo(Entity? other)
+        {
+            if (other == null) return -1;
+            if (ReferenceEquals(this, other)) return 0;
+            float dif = (this.Y * MAX_X + this.X) - (other.Y * MAX_X + other.X);
+            return (int)(dif < 0 ? Math.Floor(dif) : Math.Ceiling(dif));
         }
     }
 }

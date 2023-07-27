@@ -1,4 +1,6 @@
-﻿namespace SpriteWander
+﻿using System.Diagnostics;
+
+namespace SpriteWander
 {
     public partial class Controls : Form
     {
@@ -31,9 +33,10 @@
             Program.Park?.Exit();
         }
 
-        private void EntityList_SelectedIndexChanged(object sender, EventArgs e)
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
 
+            Process.Start(Application.ExecutablePath, "--help");
         }
     }
 }

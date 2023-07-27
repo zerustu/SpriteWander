@@ -54,10 +54,9 @@
             Name = "DrawPark";
             ShowInTaskbar = false;
             Text = "DrawPark";
-            TopMost = true;
             TransparencyKey = SystemColors.Control;
-            Load += DrawPark_Load;
             Activated += DrawPark_GotFocus;
+            Load += DrawPark_Load;
             ResumeLayout(false);
             PerformLayout();
         }
