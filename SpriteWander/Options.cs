@@ -15,5 +15,8 @@ namespace SpriteWander
 
         [Option('s', "scale", Default = 40, HelpText = "size of a sprite in pixel (effectivly devide the screen in a grid of 'scale' pixel per side)")]
         public int Scale { get; set; }
+
+        [Option("notTopmost", HelpText = "Should the overlay not be the topmost window")]
+        public bool NotTopmost { get; set; }
     }
 }

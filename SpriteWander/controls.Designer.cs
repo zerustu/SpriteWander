@@ -33,8 +33,11 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             AddButton = new Button();
             CloseButton = new Button();
+            menuStrip1 = new MenuStrip();
+            toolStripMenuItem1 = new ToolStripMenuItem();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -47,12 +50,12 @@
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Location = new Point(0, 24);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayoutPanel1.Size = new Size(284, 361);
+            tableLayoutPanel1.Size = new Size(284, 337);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // EntityList
@@ -65,7 +68,7 @@
             EntityList.Margin = new Padding(0);
             EntityList.Name = "EntityList";
             EntityList.SelectionMode = SelectionMode.MultiExtended;
-            EntityList.Size = new Size(284, 311);
+            EntityList.Size = new Size(284, 287);
             EntityList.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -78,7 +81,7 @@
             tableLayoutPanel2.Controls.Add(CloseButton, 1, 0);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanel2.Location = new Point(3, 314);
+            tableLayoutPanel2.Location = new Point(3, 290);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
@@ -112,14 +115,33 @@
             CloseButton.UseVisualStyleBackColor = true;
             CloseButton.Click += CloseButton_Click;
             // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1 });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(284, 24);
+            menuStrip1.TabIndex = 1;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(44, 20);
+            toolStripMenuItem1.Text = "Help";
+            toolStripMenuItem1.Click += toolStripMenuItem1_Click;
+            // 
             // Controls
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(284, 361);
             Controls.Add(tableLayoutPanel1);
+            Controls.Add(menuStrip1);
+            HelpButton = true;
+            MainMenuStrip = menuStrip1;
             Margin = new Padding(5, 3, 5, 3);
-            MinimumSize = new Size(196, 110);
+            MinimumSize = new Size(196, 134);
             Name = "Controls";
             Text = "controls";
             FormClosing += CloseMainApp;
@@ -127,6 +149,8 @@
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -138,5 +162,7 @@
         private TableLayoutPanel tableLayoutPanel2;
         private Button AddButton;
         private Button CloseButton;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem toolStripMenuItem1;
     }
 }
