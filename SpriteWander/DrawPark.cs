@@ -11,7 +11,8 @@ namespace SpriteWander
         public Shader shader;
         public int max_X, max_Y;
         public static float borderMargin = 0.5f;
-        Controls ControlForm;
+        public Controls ControlForm;
+        private bool stop;
 
         int oldWindowLong;
 
@@ -130,6 +131,7 @@ namespace SpriteWander
 
         public DrawPark(int max_X, int max_Y, bool Topmost)
         {
+            stop = false;
             if (Screen.PrimaryScreen == null) return;
             Rectangle screen = Screen.PrimaryScreen.Bounds;
             this.max_X = screen.Width / max_X - 1;
@@ -166,6 +168,7 @@ namespace SpriteWander
                 Entities.Run((e => e.Tick(TickTimer.Interval / 200.0)));
                 Entities = Entities.update();
                 Render();
+                if (stop) Dispose();
             };
             TickTimer.Interval = (int)(1000f / Program._options.TickFrequency);   // 1000 ms per sec / 50 ms per frame = 20 FPS
             TickTimer.Start();
@@ -248,6 +251,11 @@ namespace SpriteWander
         }
 
         public void Exit()
+        {
+            stop = true;
+        }
+
+        private void Dispose()
         {
             TickTimer.Stop();
             TickTimer.Dispose();

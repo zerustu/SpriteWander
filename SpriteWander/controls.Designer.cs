@@ -35,6 +35,8 @@
             CloseButton = new Button();
             menuStrip1 = new MenuStrip();
             toolStripMenuItem1 = new ToolStripMenuItem();
+            folderBrowserDialog1 = new FolderBrowserDialog();
+            entityFolderToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             menuStrip1.SuspendLayout();
@@ -117,7 +119,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1 });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, entityFolderToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(284, 24);
@@ -130,6 +132,18 @@
             toolStripMenuItem1.Size = new Size(44, 20);
             toolStripMenuItem1.Text = "Help";
             toolStripMenuItem1.Click += toolStripMenuItem1_Click;
+            // 
+            // folderBrowserDialog1
+            // 
+            folderBrowserDialog1.HelpRequest += folderBrowserDialog1_HelpRequest;
+            folderBrowserDialog1.InitialDirectory = Program._options.Folder;
+            // 
+            // entityFolderToolStripMenuItem
+            // 
+            entityFolderToolStripMenuItem.Name = "entityFolderToolStripMenuItem";
+            entityFolderToolStripMenuItem.Size = new Size(83, 20);
+            entityFolderToolStripMenuItem.Text = "entity folder";
+            entityFolderToolStripMenuItem.Click += entityFolderToolStripMenuItem_Click;
             // 
             // Controls
             // 
@@ -164,5 +178,7 @@
         private Button CloseButton;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem toolStripMenuItem1;
+        private FolderBrowserDialog folderBrowserDialog1;
+        private ToolStripMenuItem entityFolderToolStripMenuItem;
     }
 }

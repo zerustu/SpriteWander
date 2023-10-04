@@ -18,5 +18,8 @@ namespace SpriteWander
 
         [Option("notTopmost", HelpText = "Should the overlay not be the topmost window")]
         public bool NotTopmost { get; set; }
+
+        [Option("noConsole", HelpText = "Disable standard input reading and free the consol upon start")]
+        public bool NoConsole { get; set; }
     }
 }
