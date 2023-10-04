@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "SpriteWander": {
+      "commandName": "Project",
+      "commandLineArgs": "-f I:\\executableSW\\Sprites"
+    },
+    "SpriteWander (noConsole)": {
+      "commandName": "Project",
+      "commandLineArgs": "-f I:\\executableSW\\Sprites --noConsole"
+    }
+  }
+}
