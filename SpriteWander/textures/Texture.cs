@@ -151,6 +151,26 @@ namespace SpriteWander.textures
             Direction.DownLeft => ( -1, -1 ),
             _ => ( 0, -1 ),
         };
+
+        protected static bool isActivated(Animation anim)
+        {
+            switch (anim)
+            {
+                case Animation.Walk:
+                case Animation.Sleep:
+                case Animation.Hurt:
+                case Animation.Idle:
+                case Animation.Eventsleep:
+                case Animation.Wake:
+                case Animation.Laying:
+                case Animation.TumbleBack:
+                case Animation.Default:
+                    return true;
+                default:
+                    return false;
+            }
+            return false;
+        }
     }
 
     public enum Animation

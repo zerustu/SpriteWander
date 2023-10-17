@@ -83,7 +83,7 @@ namespace SpriteWander.textures
         public override void Use(Animation n)
         {
             Animation fixAnim = Normalise(n, out _);
-            if (ActiveAnims[fixAnim].Handle == null) { throw new Exception("Normalise can returned uninitialised anim"); }
+            if (ActiveAnims[fixAnim].Handle == null) { throw new Exception("Normalise returned uninitialised anim"); }
             Use(ActiveAnims[fixAnim].Handle.Value, OpenTK.Graphics.OpenGL4.TextureUnit.Texture0);
         }
 
@@ -109,7 +109,7 @@ namespace SpriteWander.textures
             ZipArchive archive = ZipFile.OpenRead(path);
             foreach (Anim anim in Anims)
             {
-                if (ToId(anim.Name) != Animation.Default)
+                if ( isActivated(ToId(anim.Name)) && (ToId(anim.Name) != Animation.Default))
                 {
                     ZipArchiveEntry? img = archive.GetEntry(anim.Name + "-Anim.png");
                     if (img != null)
