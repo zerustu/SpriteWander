@@ -165,6 +165,7 @@ namespace SpriteWander.textures
                 case Animation.Laying:
                 case Animation.TumbleBack:
                 case Animation.Default:
+                case Animation.Eat:
                     return true;
                 default:
                     return false;
