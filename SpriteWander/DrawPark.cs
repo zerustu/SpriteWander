@@ -8,6 +8,9 @@ namespace SpriteWander
     public partial class DrawPark : Form
     {
         public QuadTree Entities;
+        public Entity.Entity? UserEntity;
+        public Entity.ControlsCom NextCommands;
+        public Entity.ControlsReturn LastReturns;
         public Shader shader;
         public int max_X, max_Y;
         public static float borderMargin = 0.5f;
@@ -131,6 +134,9 @@ namespace SpriteWander
 
         public DrawPark(int max_X, int max_Y, bool Topmost)
         {
+            UserEntity = null;
+            NextCommands = Entity.ControlsCom.None;
+            LastReturns = Entity.ControlsReturn.OK;
             stop = false;
             if (Screen.PrimaryScreen == null) return;
             Rectangle screen = Screen.PrimaryScreen.Bounds;
@@ -165,6 +171,12 @@ namespace SpriteWander
             TickTimer = new System.Windows.Forms.Timer();
             TickTimer.Tick += (sender, e) =>
             {
+                if (UserEntity != null && NextCommands != Entity.ControlsCom.None)
+                {
+                    LastReturns = UserEntity.SendCom(NextCommands);
+                    if (NextCommands == Entity.ControlsCom.Disconnect) UserEntity = null;
+                    NextCommands = Entity.ControlsCom.None;
+                }
                 Entities.Run((e => e.Tick(TickTimer.Interval / 200.0)));
                 Entities = Entities.update();
                 Render();
@@ -272,6 +284,19 @@ namespace SpriteWander
             GL.DeleteProgram(shader.Handle);
             shader.Dispose();
             Close();
+        }
+
+        public void TakeControl(Entity.Entity entity)
+        {
+            if (UserEntity == null)
+            {
+                UserEntity = entity;
+                NextCommands = Entity.ControlsCom.Connect;
+            }
+            else
+            {
+                LastReturns = Entity.ControlsReturn.Controled;
+            }
         }
     }
 }

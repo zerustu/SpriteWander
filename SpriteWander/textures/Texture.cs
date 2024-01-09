@@ -13,13 +13,23 @@ namespace SpriteWander.textures
 {
     public abstract class Texture : IDisposable
     {
-
+        /** <summary>disposable class, is the texture readyy to be use and loaded in GPU</summary> **/
         public bool ready = false;
 
         public string? path;
         public string? name;
+
+        /** <summary>return the correct animation to run if some animation is not available or have other name</summary>*/
         public abstract Animation Normalise(Animation animation, out AnimEvent reset);
+        /** <summary> return a rectangle of the animation on the sprite to display (unit is pixel)</summary>
+         * <param name="reset">Anim event use to signalise that the animation reach the end. \n
+         * if Time > duration of the animation, should render the last valid frame and return a repeat or end anim event</param>
+         * <param name="Height">full height of the sprite sheet of this animation</param>
+           <param name="Width">full wigth of the sprite sheet of this animation</param>*/
         public abstract Rectangle Getcoord(Animation anim, Direction Dir, int Time, out int Width, out int Height, out AnimEvent reset);
+
+        /** <summary>select the correct animation sheet to be display if animation are on different sprite sheet</summary>
+         */
         public abstract void Use(Animation n);
 
         protected static int GenerateHandle()
@@ -228,10 +238,20 @@ namespace SpriteWander.textures
         DownLeft = 7
     }
 
+    /** <summary>discribe what action to take regarding the currently playing animatin</summary> */
     public enum AnimEvent
     {
+        /// <summary>
+        /// keep playing the current animation
+        /// </summary>
         Nothing,
+        /// <summary>
+        /// keep playing the current animation but reset the animation timer to loop again (change the animation if played to many time)
+        /// </summary>
         Reset,
+        /// <summary>
+        /// stop playing that animation and change to the next one
+        /// </summary>
         End
     }
 }
