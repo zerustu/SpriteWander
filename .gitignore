@@ -1,0 +1,6 @@
+.vscode/settings.json
+*.log
+natives/
+main/data/
+main/target/
+main/lib/
