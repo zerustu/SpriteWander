@@ -14,7 +14,7 @@ import java.awt.*;
  */
 public class App 
 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         final GLProfile gp = GLProfile.get(GLProfile.GL2);
         GLCapabilities cap = new GLCapabilities(gp);
 
@@ -23,8 +23,6 @@ public class App
         gc.addGLEventListener(Park);
         gc.setSize(350,350);
 
-        Entity Et0 = new Entity(Park);
-        Park.addEntity(Et0);
 
         final Frame frame = new Frame("This is the frame");
         frame.add(gc);
@@ -33,5 +31,11 @@ public class App
 
         final FPSAnimator animator = new FPSAnimator(gc, 400,true);   
         animator.start();   
+        System.out.println("waitning");
+        Thread.sleep(1000);
+        System.out.println("adding a pokemon");
+        
+        Entity Et0 = new Entity(Park);
+        Park.addEntity(Et0);
     }
 }

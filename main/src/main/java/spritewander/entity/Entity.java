@@ -55,7 +55,7 @@ public class Entity {
     {
         float cx = x/ P.max_X;
         float cy = y/P.max_Y;
-        Rectangle draw = new Rectangle(1, 1);
+        Rectangle draw = new Rectangle(200, 200);
         return new float[] {
             cx * 2f - 1f - Scale * draw.width / (P.max_X * 20), // bas gauche
             cy * 2f - 1f - Scale * draw.height / (P.max_Y * 20),
@@ -63,10 +63,10 @@ public class Entity {
             cx * 2f - 1f + Scale * draw.width / (P.max_X * 20), // bas droite
             cy * 2f - 1f - Scale * draw.height / (P.max_Y * 20),
 
-            cx * 2f - 1f - Scale * draw.width / (P.max_X * 20), // haut gauche
+            cx * 2f - 1f + Scale * draw.width / (P.max_X * 20), // haut gauche
             cy * 2f - 1f + Scale * draw.height / (P.max_Y * 20),
 
-            cx * 2f - 1f + Scale * draw.width / (P.max_X * 20), // haut droite
+            cx * 2f - 1f - Scale * draw.width / (P.max_X * 20), // haut droite
             cy * 2f - 1f + Scale * draw.height / (P.max_Y * 20),
         };
     }
@@ -81,7 +81,7 @@ public class Entity {
     public int cycle = 0;
     protected Direction subState = Direction.Up;
 
-    protected float scale = 0.2f;
+    protected float scale = 2.5f;
 
     public float Scale = scale;
 
@@ -267,6 +267,7 @@ public class Entity {
     public void display(GL2 gl) {
 
         float[] coords = getCorner();
+        //System.out.println("debug, drawing poke at : " + coords[0] + ", " + coords[1] +" . " + coords[4] + ", " + coords[5]);
         gl.glBegin(GL2.GL_QUADS);
         gl.glColor4f(1f, 0f, 0f, 1f);
         gl.glVertex3d(coords[0], coords[1], 0);
@@ -280,6 +281,7 @@ public class Entity {
     }
 
     public void dispose(GLAutoDrawable arg0) {
+        
     }
     
 }
