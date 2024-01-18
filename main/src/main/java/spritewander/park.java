@@ -31,7 +31,12 @@ public class park implements GLEventListener  {
         final GL2 gl = drawable.getGL().getGL2(); 
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         for (Entity entity : my_entities) {
-            entity.display(gl);
+            if (!entity.isTexLoaded()) {
+                entity.LinkTex(gl);
+            }
+            else {
+                entity.display(gl);
+            }
         }
         gl.glFlush(); 
     }

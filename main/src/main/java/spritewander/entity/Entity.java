@@ -1,10 +1,17 @@
 package spritewander.entity;
 
 import java.awt.Rectangle;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
+
 import spritewander.utils.*;
 import spritewander.park;
 import spritewander.textures.*;
+
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
@@ -71,6 +78,13 @@ public class Entity {
         };
     }
 
+    protected Texture tex;
+    protected boolean TexLoaded;
+
+    public boolean isTexLoaded() {
+        return TexLoaded;
+    }
+
     //animations variable
     protected int animTimer = 0;
     protected AnimEvent Event = AnimEvent.Nothing;
@@ -81,7 +95,7 @@ public class Entity {
     public int cycle = 0;
     protected Direction subState = Direction.Up;
 
-    protected float scale = 2.5f;
+    protected float scale = 15f;
 
     public float Scale = scale;
 
@@ -120,8 +134,20 @@ public class Entity {
         this.P = Park;
         this.x = this.RANDOM_X();
         this.y = this.RANDOM_Y();
+        TexLoaded = false;
     }
 
+    public void LinkTex(GL2 gl)
+    {
+        try {
+            InputStream textureStream = new FileInputStream("/media/zerustu/Donnee/Ubuntu/jeu/SWjava/demo/main/data/Sleep-Anim.png");
+            tex = TextureIO.newTexture(textureStream, true, "png");
+            textureStream.close();
+            TexLoaded = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     protected void Move(float speed)
     {
         int[] vec = subState.ToVect();
@@ -266,16 +292,19 @@ public class Entity {
 
     public void display(GL2 gl) {
 
+
+        tex.enable(gl);
+        tex.bind(gl);
         float[] coords = getCorner();
         //System.out.println("debug, drawing poke at : " + coords[0] + ", " + coords[1] +" . " + coords[4] + ", " + coords[5]);
         gl.glBegin(GL2.GL_QUADS);
-        gl.glColor4f(1f, 0f, 0f, 1f);
+        gl.glTexCoord2f(0, 0);
         gl.glVertex3d(coords[0], coords[1], 0);
-        gl.glColor4f(0f, 0f, 1f, 1f);
+        gl.glTexCoord2f(1, 0);
         gl.glVertex3d(coords[2], coords[3], 0);
-        gl.glColor4f(0f, 1f, 0f, 1f);
+        gl.glTexCoord2f(1, 1);
         gl.glVertex3d(coords[4], coords[5], 0);
-        gl.glColor4f(1f, 1f, 1f, 0f);
+        gl.glTexCoord2f(0, 1);
         gl.glVertex3d(coords[6], coords[7], 0);
         gl.glEnd();
     }

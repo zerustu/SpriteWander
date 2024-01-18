@@ -37,5 +37,7 @@ public class App
         
         Entity Et0 = new Entity(Park);
         Park.addEntity(Et0);
+        Entity Et1 = new Entity(Park);
+        Park.addEntity(Et1);
     }
 }
